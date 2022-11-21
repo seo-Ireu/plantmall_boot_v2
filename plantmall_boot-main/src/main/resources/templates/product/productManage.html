@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css"
+	th:href="@{../static/style/sewon.css}">
+
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body onload="init();">
+	<div th:insert="~{header :: #top}"></div>
+	<div th:unless="${session.userSession}">
+		<div>해당 페이지에 접근하려면, 로그인 하세요</div>
+	</div>
+	<div
+		th:if="${session.userSession} and ${session.userSession.User.userId} != ${userId}">
+		<div>제품 관리는 자신의 제품만 관리 가능합니다.</div>
+	</div>
+	<div
+		th:if="${session.userSession} and ${session.userSession.User.userId} == ${userId}">
+		<h2 class="navbar">
+			제품 관리 목록 <a th:href="@{/product/registration?userId=}+${userId}"
+				class="getstarted scrollto"> 새 제품 등록 </a>
+		</h2>
+		<div align="center">
+			<table class="noLineTable">
+				<tr th:each="miniProductList, iterStat : ${productList}">
+					<td th:each="product, miniIterStat : ${miniProductList}"><img
+						alt="등록된 이미지가 없습니다"
+						th:src="@{/getByteImage?p_name=}+${product.p_name}"
+						style="width: 200px; height: 200px">
+						<div th:text="${product.p_name}">제품명</div>
+						<div th:text="${product.price}+원">가격</div>
+						<div class="navbar">
+							<a
+								th:href="@{/product/modify?userId=}+${userId}+@{&productId=}+${product.productId}"
+								class="getstarted scrollto"> 수정 </a> <a
+								th:href="@{/product/delete?userId=}+${userId}+@{&productId=}+${product.productId}"
+								class="getstarted scrollto"> 삭제 </a>
+						</div></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

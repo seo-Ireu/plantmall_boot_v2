@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../../static/style/garam.css" type="text/css" >
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}"> 
+	
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+<script th:inline="javascript">
+	function windowReLoad() {
+		location.href="/order/orderReset";
+	}
+	function window() {
+		location.href="/order/orderReset?status=0"
+	}
+</script>
+</head>
+<body>
+<div th:insert="~{header :: #top}"></div>
+
+<div class="orderForm" onload="window();">
+	<div class="pageTitle">주문</div>
+		<div class="formTitle">주문제품 정보</div>
+		<table class="orderElement">
+			<tr>
+				<td class="imgBox">
+					<img alt="등록된 이미지가 없습니다" th:src="@{/getByteImage?p_name=}+${product.p_name}" style="width:200px; height:200px;" />
+				</td>
+				<td class="content">
+					<dl>
+						<dt><span th:text="${product.p_name}"></span></dt>
+						<dd>
+							제품 가격: <span th:text="${product.price}">16000</span>원 <br>
+							수량: <span th:text="${fundingOrderForm.fundingOrder.quantity}">1</span>개 <br>
+							합계: <span th:text="${fundingOrderForm.fundingOrder.totalPrice}">16000</span>원
+						</dd>
+					</dl>
+				</td>
+			</tr>
+		</table>
+
+		<form action="#" th:action="@{/funding/newOrderSubmitted}" method="post" th:object="${fundingOrderForm}">
+		<input type=hidden th:field="*{fundingOrder.userId}"/>
+		<input type=hidden th:field="*{fundingOrder.fundingId}"/>
+		<input type=hidden th:field="*{fundingOrder.quantity}"/>
+		<input type=hidden th:field="*{fundingOrder.totalPrice}"/>
+			<span th:each="err:${#fields.globalErrors()}" th:text="${err}"></span>
+			<div class= "division">
+				<div class="left">
+					<div class="formWrap">
+						<div class="formTitle">주문자 정보</div>
+						<div class="formRow">
+							<div class="formCol head">이름</div>
+							<div class="formCol body">
+								<input type="text" class="input default" th:field="*{fundingOrder.userName}" />
+								<span th:each="err:${#fields.errors('fundingOrder.userName')}" th:text="${err}"></span>
+							</div>
+						</div>
+						<div class="formRow">
+							<div class="formCol head">휴대폰</div>
+							<div class="formCol body">
+								<input type="text" class="input default" th:field="*{fundingOrder.phoneNumber}" />
+								<span th:each="err:${#fields.errors('fundingOrder.phoneNumber')}" th:text="${err}"></span>
+							</div>
+						</div>
+						<div class="formRow">
+							<div class="formCol head">주소</div>
+							<div class="formCol body">
+								<input type="text" class="input default" th:field="*{fundingOrder.shipAddress}" />
+								<span th:each="err:${#fields.errors('fundingOrder.shipAddress')}" th:text="${err}"></span>
+							</div>
+						</div>
+					</div>
+					<!-- 결제 정보 -->
+					<div class="formWrap">
+						<div class="formTitle">결제 정보</div>
+						<div class="formRow">
+							<div class="formCol head">카드 타입</div>
+							<div class="formCol body">
+								<select class="input default" th:field="*{fundingOrder.cardType}">
+									<option th:each="ty:${creditCardTypes}" th:value="${ty}" th:text="${ty}">Visa</option>
+								</select>
+							</div>
+						</div>
+						<div class="formRow">
+							<div class="formCol head">카드 번호</div>
+							<div class="formCol body">
+								<input type="text" class="input default" th:field="*{fundingOrder.creditCard}" placeholder="9999-9999-9999-9999" />
+								<span th:each="err:${#fields.errors('fundingOrder.creditCard')}" th:text="${err}"></span>
+							</div>
+						</div>
+						<div class="formRow">
+							<div class="formCol head">유호기간 (MM/YY)</div>
+							<div class="formCol body">
+								<input type="text" class="input default" th:field="*{fundingOrder.expiryDate}" placeholder="11/24" />
+								<span th:each="err:${#fields.errors('fundingOrder.expiryDate')}" th:text="${err}"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- left끝 주문자 정보, 결제 정보 입력 끝  -->
+				<div class="right">
+					<table class="priceTable">
+						<tbody>
+							<tr>
+								<th colspan="2">전체주문금액</th>
+							</tr>
+							<tr>
+								<td> 배송비 </td>
+								<td class="txtRight">
+									<span class="deliveryAmount" id="deliveryAmount">3000</span> 원
+								</td>
+							</tr>
+							<tr>
+								<td> 총 상품 금액 </td>
+								<td class="txtRight">
+									<span th:text="*{fundingOrder.totalPrice}">16000</span> 원
+								</td>
+							</tr>
+							<tr class="finalPrice">
+								<td> <b>결제 예정 금액</b> </td>
+								<td class="txtRight">
+									<span class="payAmount" id="payAmount" th:text="*{fundingOrder.totalPrice + 3000}">19000</span> 원
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div>
+						<button type="submit" class="gButton">결제하기</button>
+						<a href="javascript:void(0)" class="button" th:href="@{/funding}">취소하기</a>
+					</div>
+				</div>
+			</div>
+		</form> 
+	</div>
+</body>
+</html>

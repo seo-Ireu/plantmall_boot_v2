@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../../static/style/garam.css" type="text/css" >
+<link rel="stylesheet" href="../../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}"> 
+	
+<!-- Vendor CSS Files -->
+<link href="../../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../../static/style/style.css}" />
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+	<div th:insert="~{header :: #top}"></div>
+
+	<div class="orderPage">
+	<h2>펀딩 주문 내역</h2>
+		<table class="table" th:if="${fundingOrderList}">
+		  <thead>	  
+		    <tr>
+		      <th scope="col">주문번호</th>
+		      <th scope="col">펀딩제목</th>
+		      <th scope="col">주문상태</th>
+	      	  <th scope="col"></th>
+		    </tr>
+		  </thead>
+		  <tbody>
+			<tr th:each="order, status:${fundingOrderList}">
+				<th scope="row">
+					<b><span th:text="|${#dates.format(order.create_at, 'yyyyMMdd')}${order.fundingRelationId}|">2022061271</span></b>
+				</th>
+				<td>
+					<b><span th:text="${order.funding.title}">다육이펀딩</span></b>
+				</td>
+				<td>
+					<span th:if="${order.status}==0">주문취소</span>
+					<span th:if="${order.status}==1">주문완료</span>
+				</td>
+				<td>
+					<span >
+						<a href="#" th:href="@{/funding/order/{fundingRelationId}(fundingRelationId=${order.fundingRelationId})}">상세보기</a>
+					</span>
+				</td>
+			</tr>		    
+		  </tbody>
+		</table>	
+	<h2>내 펀딩 내역</h2>
+		<table class="table" th:if="${fundingOrderList}">
+		  <thead>	  
+		    <tr>
+		      <th scope="col">주문번호</th>
+		      <th scope="col">펀딩제목</th>
+		      <th scope="col">주문상태</th>
+	      	  <th scope="col"></th>
+		    </tr>
+		  </thead>
+		  <tbody>
+			<tr th:each="funding, status:${myFundingList}">
+				<td>
+					<b><span th:text="${funding.fundingId}">71</span></b>
+				</td>
+				<td>
+					<b><span th:text="${funding.title}">다육이펀딩</span></b>
+				</td>
+				<td><span th:text="|${funding.orderNum}/${funding.targetQuantity}|">12/50</span></td>
+				<td>
+					<span class="orderDetailPage">
+						<a id="btn_click"  th:onclick="postJson3([[${funding.fundingId}]])">주문 상세보기</a>
+					</span>
+				</td>
+			</tr>	    
+		  </tbody>
+	</table>	
+
+		<table class="table">
+		  <thead>	  
+		    <tr>
+		      <th scope="col">주문번호</th>
+		      <th scope="col">주문상태</th>
+		      <th scope="col">주문자아이디</th>
+		    </tr>
+ 				</thead>
+			<tbody id="result">	
+			</tbody>
+		</table>
+	</div>
+	<script th:inline="javascript">
+	
+	function postJson3(fundingId) {	
+		
+		$.ajax({
+			url : "/funding/buyerList",
+			type : "post",
+			data : {
+				fundingId : fundingId,
+			},
+			success : function(result) {
+				$("#result").html("");
+				var content ="";
+				$(result).each(function(i,data){
+					content +="<tr><th>";
+					content+=JSON.parse(data.fundingRelationId)+"</th>";
+					if(JSON.parse(data.status)==1){
+						content+="<td>주문 완료</td>";
+					}else{
+						content+="<td>주문 취소</td>";
+					}
+					content+="<td>"+JSON.stringify(data.userName)+"</td>";
+					content+="<td><a href=\"/funding/order/"+
+						JSON.parse(data.fundingRelationId)+"\""+">상세보기</a></td>";
+					content+="</tr>";	
+				});
+				
+				$("#result").append(content);
+			}
+		})
+	}
+	
+		
+	$(document).ready(function(){
+		$("#btn_click").click(postJson3);
+	});
+
+	</script>
+</body>
+</html>

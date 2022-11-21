@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.plantmall.dao.mybatis.mapper.FundingRelationMapper">
+<cache />
+<sql id="fRBaseColumns">
+		FR.fundingRelationId,
+		FR.BUYERID,
+		FR.status,
+		FR.fundingId,
+		FR.create_at,
+		FR.creditCard,
+		FR.expiryDate,
+		FR.cardType,
+		FR.quantity,
+		FR.totalPrice,
+		FR.userName,
+		FR.phoneNumber,
+		FR.shipAddress,
+		F.FUNDINGID,
+    	F.PRODUCTID,
+    	F.TITLE
+</sql>
+<resultMap id="fundingRelationMap" type="FundingOrder">
+	<id column="fundingRelationId" property="fundingRelationId"/>
+	<result column="BUYERID" property="userId"/>
+	<result column="status" property="status"/>
+	<result column="fundingId" property="fundingId"/>
+	<result column="create_at" property="create_at"/>
+	<result column="creditCard" property="creditCard"/>
+	<result column="expiryDate" property="expiryDate"/>
+	<result column="cardType" property="cardType"/>
+	<result column="quantity" property="quantity"/>
+	<result column="totalPrice" property="totalPrice"/>
+	<result column="userName" property="userName"/>
+	<result column="phoneNumber" property="phoneNumber"/>
+	<result column="shipAddress" property="shipAddress"/>	
+	<association property="funding" column="FUNDINGID" javaType="Funding">
+		<id property="fundingId" column="fundingId"/>
+		<result property="title" column="title"/>
+	</association>
+</resultMap>
+
+	<select resultType="FundingOrder" id="getFundingOrder">
+		SELECT *
+		FROM FUNDINGRELATION WHERE FUNDINGRELATION.FUNDINGRELATIONID = #{param1}
+	</select>
+
+	<select resultMap="fundingRelationMap" id="getAllFundingOrderListByBuyerId">
+		SELECT <include refid="fRBaseColumns"/>
+		FROM FUNDINGRELATION FR, FUNDING F
+		WHERE FR.BUYERID = #{param1} AND FR.FUNDINGID=F.FUNDINGID ORDER BY create_at DESC
+	</select>
+	
+	<select resultType="FundingOrder" id="getAllMyFundingOrderList">
+		SELECT FUNDINGRELATIONID,
+			BUYERID AS userId,
+			USERNAME,
+			FUNDINGID,
+			STATUS,
+			QUANTITY,
+			TOTALPRICE,
+			CREATE_AT
+		FROM FUNDINGRELATION
+		WHERE FUNDINGID=#{param1}
+	</select>
+	
+	<insert id="insertFundingOrder" parameterType="FundingOrder">
+	BEGIN
+		INSERT INTO FUNDINGRELATION
+		(FUNDINGRELATIONID,
+		 STATUS,
+		 BUYERID,
+		 FUNDINGID,
+		 CREATE_AT,
+		 CREDITCARD,
+		 EXPIRYDATE,
+		 CARDTYPE,
+		 QUANTITY,
+		 TOTALPRICE,
+		 USERNAME,
+		 PHONENUMBER,
+		 SHIPADDRESS)
+		VALUES (#{fundingRelationId},
+		'1',
+		#{userId},
+		#{fundingId},
+		SYSDATE,
+		#{creditCard},
+		#{expiryDate},
+		#{cardType},
+		#{quantity},
+		#{totalPrice},
+		#{userName},
+		#{phoneNumber},
+		#{shipAddress});
+		<selectKey keyProperty="fundingRelationId" resultType="String" order="BEFORE">
+			SELECT FUNDINGRELATION_SEQ.NEXTVAL AS FUNDINGRELATIONID FROM DUAL
+		</selectKey>
+		
+		UPDATE FUNDING
+		SET ORDERNUM = ORDERNUM+#{quantity}
+		WHERE FUNDINGID = #{fundingId};
+		END;
+	</insert>
+	
+	
+	<update id="deleteFundingOrder">
+		UPDATE FUNDINGRELATION
+		SET STATUS=0 
+		WHERE FUNDINGRELATIONID = #{param1}
+	</update>
+	
+
+</mapper>

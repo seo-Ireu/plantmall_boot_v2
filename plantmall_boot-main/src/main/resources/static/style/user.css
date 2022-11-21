@@ -1,0 +1,123 @@
+@charset "UTF-8";
+
+/* user/profile */
+
+/*유저 프로필, 피드업로드 모달 화면 가운데 위치 */
+.selectContentCategory  {
+	text-align: center;
+}
+.profileGroup {
+	text-align: center;
+	display: inline-block;
+	width: 1000px;
+	margin-top: 200px;
+}
+.profileImage {
+	width: 120px;
+	height: 120px;
+	border: 1px solid;
+	border-radius: 50%;
+	/*background-image: url("/image/..");*/
+}
+.followText {
+	color: black;
+}
+.profileGroup {
+	padding: 20px 50px;
+	text-align: left;
+	display: grid;
+	grid-template-columns: auto auto;
+}
+.thumbnail {
+	width: 200px;
+	height: 200px;
+	position: relative;
+}
+.uploadbtn .goProjectPagebtn {
+	margin-top: 20px;
+}
+.name {
+	margin-right: 15px;
+	font-size: 28px;
+	font-weight: 100;
+}
+.rower * {
+	margin-right: 20px;
+	display: inline-block;
+	
+}
+.rower {
+	margin-top: 20px;
+	font-weight: 600;
+}
+.photo * {
+	display: inline-block;
+	width: 1fr;
+	height: 300px;
+	margin: 0 0 15px 0;
+}
+.photo * * {
+	width: 300px;
+	margin: 0 15px 0 0;
+}
+.photobox {
+	position: relative;
+}
+.photobox:hover .photoimage {
+	opacity: 0.4;
+}
+
+/* selectContentCategory 피드종류 선택 창 관련 */
+#modal.selectContentCategory {
+	width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.modal-title{
+	display: inline;
+	line-height: 1.5;
+}
+.modal-btn{
+	cursor:pointer;
+	background-color:#DDDDDD;
+	text-align: center;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	font-size: 13pt;
+}
+
+
+/* user/update */
+#profileUpdate {
+    	margin: auto;
+	    text-align: center;
+	    width: 500px;
+    	height: 500px;
+}
+.profileUpdateCancle {
+    	float: right;
+}
+
+
+/* user/follow */
+.followList {
+    	text-align: center;
+    	text-decoration:none;
+}
+    
+.followInfo {
+    	display: inline-flex;
+    	margin-right: 30px;
+}
+.close {
+    	margin-right: 350px;
+    	text-align: right;
+    	
+}
+    	

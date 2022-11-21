@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+	<title>Insert title here</title>
+	<link rel="stylesheet" href="../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}"> 
+	
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body>
+<div th:insert="~{header :: #top}"></div>
+<div align="center">
+	<div th:unless="${isNew}">
+		<h2> AUTH UPDATE FORM</h2>
+	</div>
+	<div th:if="${isNew}">
+		<h2> SIGNUPFORM</h2>
+	</div>		
+
+	<form th:action="@{/signup}" th:object="${userForm}" method="post">
+  <div class="form-row" style="width:700px;">
+    <div class="form-group col-md-6" align="left">
+      <label for="inputEmail4">아이디</label>
+      <input type="text" id="user.userId" class="form-control" th:field="*{user.userId}" placeholder="이메일"/>
+    </div>
+    <div class="form-group col-md-6"align="left">
+      <label for="inputPassword4">Password</label>
+      <input type="password" id="user.password" th:field="*{user.password}" class="form-control"  placeholder="비밀번호"/>
+    </div>
+    <div class="form-group col-md-6"align="left">
+     <label for="inputPassword4">이름</label>
+     <input type="text" id="user.userName" th:field="*{user.userName}"  class="form-control"  placeholder="이름"/>
+   	</div> 
+  <div class="form-group col-md-6"align="left">
+    <label for="inputAddress">이메일</label>
+    <input type="text" id="user.email" th:field="*{user.email}"  class="form-control"  placeholder="이메일"/>
+  </div>
+  <div class="form-group col-md-6"align="left">
+    <label for="inputAddress2">핸드폰</label>
+    <input type="text" id="user.phone" th:field="*{user.phone}" class="form-control"  placeholder="핸드폰"/>
+  </div>
+  <div class="form-group col-md-6"align="left">
+    <label for="inputAddress2">우편번호</label>
+    <input type="text" id="user.zipcode" th:field="*{user.zipcode}" class="form-control"  placeholder="우편번호"/>
+  </div>
+   <div class="form-group col-md-6"align="left">
+    <label for="inputAddress2">주소</label>
+    <input type="text" id="user.address" th:field="*{user.address}" class="form-control"  placeholder="주소"/>
+  </div>
+  </div>
+  <br>
+  <button type="submit" class="btn btn-success">Sign in</button>
+</form>
+
+</div>
+</body>
+</html>

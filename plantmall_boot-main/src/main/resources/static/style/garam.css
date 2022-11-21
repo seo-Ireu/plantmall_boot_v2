@@ -1,0 +1,640 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'NanumSquareRound';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+* {
+  font-family:'NanumSquareRound' !important;
+  box-sizing: content-box;
+}
+a.button {    
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    letter-spacing: 1px;
+    display: inline-block;
+    border-radius: 4px;
+    transition: 0.5s;
+    line-height: 58px;
+    color: #fff;
+    -webkit-animation-delay: 0.8s;
+    animation-delay: 0.8s;
+    background: #5cb874;
+    margin-top: 10px;
+}
+a,
+a:visited {
+  	text-decoration: none;
+}
+.gButton {
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    letter-spacing: 1px;
+    display: inline-block;
+    border-radius: 4px;
+    transition: 0.5s;
+    line-height: 58px;
+    color: #fff;
+    -webkit-animation-delay: 0.8s;
+    animation-delay: 0.8s;
+    background: #5cb874;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+}
+p {
+	margin: 0;
+	padding: 0;
+}
+.orderPage {
+	/* 전체 div */
+	margin: 0 auto;
+	padding-top: 10px;
+	width: 700px;
+}
+
+.pageTitle {
+	/* 상단 '주문 목록' 텍스트 */
+	font-size: 28px;
+	text-align: center;
+	margin-bottom: 30px;
+	font-weight: bold;
+}
+.orderForm {
+	/* 1200px크기로 가운데에 오도록 */
+	margin: 0 auto;
+	width: 1200px;
+}
+.orderDetail {
+	width: 100%;
+}
+.orderInfo {
+/* 주문 내역 상단 날짜, 주문번호, 주문 상세보기 링크 */
+	padding: 5px 0 0 10px;
+}
+.listContents {
+	padding-top: 6px;
+	padding-left: 10px;
+}
+.orderDateText {
+	text-align: left;
+	padding-right: 20px;
+	font-size: 20px;
+}
+.reviewBtn {
+	font-family: "Raleway", sans-serif;
+	float: right;
+    font-size:15px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    transition: 0.5s;
+    line-height: 30px;
+    width: 8%;
+    color: #fff;
+    -webkit-animation-delay: 0.8s;
+    animation-delay: 0.8s;
+    background: #5cb874;
+}
+.orderDetailPage {
+	float: right;
+	text-align: right;
+	padding-right: 10px
+}
+table.orderElement {
+	border: solid 1px;
+	border-collapse: collapse;
+	padding-left: 20px;
+	padding-right: 20px;
+	border-radius: 4px;
+	border-style: hidden;
+ 	box-shadow: 0 0 0 1px #000;
+}
+table.orderDetailElement {
+	width: 100%;
+	border: solid 1px;
+	border-collapse: collapse;
+	padding-left: 20px;
+	padding-right: 20px;
+	border-radius: 4px;
+	border-style: hidden;
+ 	box-shadow: 0 0 0 1px #000
+}
+table.orderElement tr {
+	border: solid 1px;
+	padding: 20px;
+	border-collapse: collapse;
+	border-color: gray;
+}
+table.orderDetailElement tr{
+	border: solid 1px;
+	border-color: gray;
+	padding-bottom: 10px;
+	border-collapse: collapse;
+}
+.orderContents {
+/* 주문 목록 element 안에 들어가는 이미지, 이름, 가격 */
+	width: 100%;
+	word-break: break-all;
+	font-size: 16px;
+}
+
+.orderContents p {
+	font-size: 20px;
+}
+.contents {
+/* 장바구니 아이템 element 안에 들어가는 이름, 가격, 수량, 총 가격 설정 */
+	display: inline-block;
+	width: 570px;
+	word-break: break-all;
+	padding: 20px 0 0 0 ;
+	font-size: 16px;
+}
+.imgBox {
+/* 	width: 120px;
+	height: 120px; */
+	padding-left: 10px;
+	padding-right: 20px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	float: left;
+}
+.imgBox img {
+	width: 120px;
+	height: 120px;
+}
+/* Cart, Review에서 사용 */
+.content {
+	width: 650px;
+	/*font-size: 20px;*/
+	padding-top: 10px;
+	padding-right: 20px;
+}
+/* orderDetail에서 제품 목록 컨텐트*/
+.DetailElementsContent {
+	width: 685px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.productName {
+	font-size: 18px;
+	font-weight: bold;
+}
+.itemPrice {
+	font-size: 20px;
+	float: right;
+	padding-right: 5px;
+}
+.priceSum {
+	padding-top: 15px;
+	font-size: 20px;
+	text-align: center;
+}
+dt {
+	font-size: 18px;
+    font-weight: bold;
+}
+dd {
+	display: block;
+	margin-left: 0px;
+}
+.quantityPrice {
+	/* display: inline;  */
+	font-size: 16px;
+}
+.division {
+	display:flex;
+	justify-content: space-between;
+	width: 100%;
+}
+.left {
+/* order form  */
+	margin-left: 25px;
+	margin-right: 25px;
+	width: 670px;
+}
+.orderFormleft {
+	margin-left: 25px;
+	margin-right: 25px;
+	
+}
+.right {
+/* 전체 주문 금액 부분*/
+	flex: 1;
+	box-sizing: border-box;
+}
+.input.default {
+	font-size: 16px;
+	padding: 11px;
+	box-sizing: border-box;
+	border: solid 10x;
+	vertical-align: middle;
+	width: 300px;
+}
+table.priceTable {
+	width: 100%;
+	border: solid 1px;
+	border-collapse: collapse;
+	margin: 50px 0 10px 0;
+	border-radius: 4px;
+	border-style: hidden;
+ 	box-shadow: 0 0 0 1px #000;
+}
+table.cartPriceTable {
+	width: 330px;
+	float: right;
+	border: solid 1px;
+	border-collapse: collapse;
+	border-radius: 4px;
+	border-style: hidden;
+ 	box-shadow: 0 0 0 1px #000;
+}
+table.cartPriceTable tr th {
+	padding: 5px;
+	font-size: 21px;
+	text-align: center;
+	border: solid 1px;
+	border-color: gray;
+	height: 40px;
+}
+table.cartPriceTable tr td {
+	padding: 10px 30px;
+	border-color: gray;
+	font-size: 17px;
+}
+
+table.priceTable tr th {
+	padding: 5px;
+	font-size: 21px;
+	text-align: center;
+	border: solid 1px;
+	border-color: gray;
+	height: 40px;
+}
+table.priceTable tr td {
+	padding: 10px 30px;
+	font-size: 17px;
+	border-color: gray;
+}
+.txtRight {
+	text-align: right;
+}
+.finalPrice {
+	border-top: solid 1px;
+	padding: 15px 5px 40px 20px;
+	font-size: 21px;
+}
+.finalPrice span {
+	font-size: 25px;
+}
+.formWrap {
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+.formTitle {
+	font-size: 25px;
+	font-weight: bold;
+	padding-bottom: 15px;
+	border-bottom: solid 1px;
+}
+.orderElementsInfo {
+	font-size: 25px;
+	font-weight: bold;
+	padding-bottom: 15px;
+}
+.formRow {
+	box-sizing: border-box;
+	border-bottom: solid 1px;
+}
+.formCol {
+	display: inline-block;
+	vertical-align: top;
+	box-sizing: border-box;
+}
+.formCol.head {
+	width: 170px;
+	font-size: 18px;
+	font-weight: 450;
+	padding-top: 25px;
+	padding-bottom: 22px;
+	border-right: solid 1px;
+}
+.formCol.body {
+	font-size: 16px;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	padding-right: 15px;
+}
+ul {
+/* 점, 들여쓰기 없앰 */
+	list-style: none;
+	padding-left: 0px;
+}
+li select {
+	width: 50px;
+	height: 26px;
+	font-size: 12px;
+	padding: 0 2px;
+	text-align: center;
+}
+.wishList {
+/* 1200px크기로 가운데에 오도록 */
+	margin: 0 auto;
+	width: 1050px;
+}
+.listCheck {
+/* 전체 선택 부분 */
+	font-size: 20px;
+	padding-top: 40px;
+	padding-bottom: 15px;
+}
+
+.cartList {
+/* 장바구니 아이템 리스트랑 결제 금액 나타내는 부분 */
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+table.cartElement {
+/* 장바구니 아이템 리스트 element */
+	width: 100%;
+	border: solid 1px;
+	border-collapse: collapse;
+	border-radius: 4px;
+	border-style: hidden;
+ 	box-shadow: 0 0 0 1px #000;
+}
+table.cartElement tr {
+	border: solid 1px;
+	border-color: gray;
+	padding: 20px;
+	border-collapse: collapse;
+}
+.selectItemBox {
+/* 장바구니 아이템 element 하나 선택 */
+	float:left;
+}
+.selectItemBox input,checkbox {
+	width: 15px;
+	height: 15px;
+	border: 3px solid #707070;
+}
+.deleteItemBox {
+/* 장바구니 아이템 element 하나 삭제 */
+	float: right;
+	padding-right: 10px;
+}
+.deleteItemBox input,button {
+	border:none;
+	background:none;
+	color: gray;
+	font-size: 17px;
+	padding-top: 5px;
+	cursor: pointer;
+}
+.quantityPrice input,button {
+	color: black;
+	border: none;
+	background-color: lightgray;
+	font-size: 15px;
+	width: 4%;
+	cursor: pointer;
+}
+.quantityBtn {
+	float: left;
+}
+
+/* Review css */
+.reviewForm {
+	/* 전체 div */
+	margin: 0 auto;
+	width: 700px;
+	padding-top: 100px;
+}
+.ReviewOrderElement {
+	width: 100%;
+	border: solid 1px;
+	border-collapse: collapse;
+	word-break: break-all;
+	font-size: 16px;
+	display: flex;
+	border-radius: 4px;
+	border-style: hidden;
+ 	box-shadow: 0 0 0 1px #000;
+ 	padding-top: 10px;
+ 	padding-bottom: 10px;
+}
+.orderDetailElement .ReviewImgBox {
+	padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    float: left;
+}
+.ReviewImgBox {
+    padding-left: 10px;
+    padding-right: 10px;
+    float: left;
+}
+
+.ReviewImgBox img {
+	width: 120px;
+	height: 120px;
+}
+
+.ReviewContent {
+	width: 550px;
+	font-size: 20px;
+/* 	padding-top: 10px; */
+}
+
+.ReviewContent .quantity {
+	font-size: 17px;
+}
+
+.ReviewDetail_write_area {
+	border: 1px solid;
+	padding-bottom: 10px;
+}
+.ReviewDetail_title{
+	padding-top: 10px;
+	padding-bottom: 5px;
+}
+.write_area {
+	border: 1px solid;
+}
+.rFormTitle {
+	border-bottom: solid 1px;
+	padding-right: 15px;
+}
+textarea {
+	border: none;
+	font-size: 16px;
+	width: 100%;
+	height: 100%;
+}
+textarea:focus {
+	outline: none;
+}
+.rFormTitle textarea{
+	font-size: 20px;
+	padding-top: 10px;
+}
+
+.rFormTitle span {
+	font-size: 20px;
+    padding-top: 10px;
+}
+
+.rFormCol {
+	vertical-align: top;
+	box-sizing: border-box;
+}
+.rFormCol.reviewBody {
+	font-size: 16px;
+	padding-top: 12px;
+	padding-right: 15px;
+}
+
+.includeReview {
+	width: 1000px;
+	margin: 0 auto;
+	margin-bottom: 40px;
+}
+.reviewElements {
+	width: 1000px;
+	margin: 0 0 10px;
+}
+.review {
+	width: 1000px;
+	vertical-align: top;
+	overflow: hidden;
+	height : auto;
+	border-bottom: solid 1px;
+	padding: 20px 5px;
+	word-break: break-all;
+}
+.nameDate {
+	font-size: 18px;
+	font-weight: bold;
+}
+.IncludeReviewTitle {
+	font-size: 16px;
+	font-weight: bold;
+}
+.button {
+	float: right;
+}
+.updateReview {
+	display: inline-block;
+}
+a.btnUpdate {
+	float: right;
+	margin-bottom: 10px;
+  	width: 40px;
+  	line-height: 30px;
+    font-size: 15px;
+    text-align: center;
+    vertical-align: middle;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: #555555;
+}
+
+
+
+/* Enquiry css */
+.enquiryForm {
+	/* 전체 div */
+	margin: 0 auto;
+	width: 700px;
+	padding-top: 100px;
+}
+.includeEnquiry {
+	width: 1000px;
+	margin: 0 auto;
+	margin-bottom: 20px;
+}
+.enquiry a {
+	color: white;
+}
+.createEnq {
+	position: relative;
+	border-top: solid 1px lightgray;
+	border-bottom: solid 1px lightgray;
+	padding: 25px 8px;
+	margin: 0;
+}
+.enquiryElements {
+	width: 100%;
+}
+.navSideBtn{
+	position: absolute;
+	right: 3px;
+	top: 7px;
+}
+.enqButton {    
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    letter-spacing: 1px;
+    display: inline-block;
+    border-radius: 4px;
+    transition: 0.5s;
+    line-height: 25px;
+    color: #fff;
+    -webkit-animation-delay: 0.8s;
+    animation-delay: 0.8s;
+    background: #5cb874;
+    padding: 5px;
+}
+.updateEnq {
+	font-size: 14px;
+	padding: 5px 5px 5px 5px;
+    text-align: center;
+    vertical-align: middle;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: gray;
+}
+div.miniTab>span {
+	padding-right: 15px;
+	font-size: 14px;
+	height: 18px;
+}
+div.miniTab>span:first-child {
+	font-weight: bold;
+}
+.question {
+	font-size: 16px;
+	font-weight: bold;
+	overflow: hidden;
+	height : auto;
+	border-bottom: solid 1px lightgray;
+	padding: 10px 5px 10px 5px;
+	word-break: break-all;
+}
+.replyCell {
+	padding: 10px 30px;
+	line-height: 22px;
+	border-top: 1px solid lightgray;
+}
+.info {
+	line-height: 22px;
+}
+.replyText{
+	margin: 10px;
+	overflow: hidden;
+	height : auto;
+	word-break: break-all;
+}

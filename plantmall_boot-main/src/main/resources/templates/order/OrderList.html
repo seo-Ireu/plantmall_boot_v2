@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../../static/style/garam.css" type="text/css" >
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}"> 
+	
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body>
+	<div th:insert="~{header :: #top}"></div>
+	<hr>
+	<div class="orderPage">
+		<div class="orderList">
+			<div style="text-align: center;">
+				<b><span th:if="${#lists.size('orderList')} == 0" style="font-size: 20px;">주문 목록이 비어있습니다.</span></b>
+			</div>
+			<table class="orderDetailElement" th:if="${#lists.size('orderList')} != 0" >
+				<tbody>
+					<tr th:each="order, status:${orderList}">
+						<td>
+							<div class="orderInfo">
+								<b><span th:text="${#dates.format(order.orderDate, 'yyyy.MM.dd HH:mm')}">2022.04.09</span></b>
+								<span class="orderDetailPage">
+									<a href="#" th:href="@{/order/orderDetail(orderId=${order.orderId},status=0)}">주문 상세보기</a>
+								</span>
+							</div>
+							<div class="orderContents" th:each="lineItem,index : ${order.lineItems}" th:if="${index.first}">
+								<div class="imgBox" th:if="${index.index} < 1">
+									<a href="#" th:href="@{/product(productId=${lineItem.productId})}">
+										<img th:src="@{/getByteImage?p_name=} + ${lineItem.product.p_name}" />
+									</a>
+								</div>
+								<div class="listContents">
+									<p th:if="${index.size} &gt 1" th:text="|${lineItem.product.p_name} 외 ${index.size - 1}개|">첫번째 상품</p>
+									<p th:if="${index.size} == 1"  th:text="|${lineItem.product.p_name}|">첫번째 상품</p>
+									<br><br><br>
+									<span class="itemPrice" th:text="|${order.totalPrice + 3000}원|">16000원</span>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

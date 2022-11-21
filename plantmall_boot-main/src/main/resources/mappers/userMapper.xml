@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.plantmall.dao.mybatis.mapper.UserMapper">
+ 
+    <!-- 유저 목록 조회 -->
+    <select id="selectList" resultType="User">
+        SELECT EMAIL
+          FROM USER_TABLE
+    </select>
+    
+    <insert id="insertUser" parameterType="User">
+    	INSERT INTO USER_TABLE
+    	(userId,userName,password,email,phone,zipcode,address)
+    	VALUES
+    	(#{userId},#{userName},#{password},#{email},#{phone},#{zipcode},#{address})
+    	<selectKey keyProperty="userId" resultType="String" order="BEFORE">
+			SELECT USER_TABLE_SEQ.NEXTVAL AS userId FROM DUAL
+		</selectKey>
+    </insert>
+
+    <select id="getUserByEmailAndPassword" resultType="User">
+	    SELECT
+	    	USERID,
+	    	USERNAME,
+	    	EMAIL,
+	    	PHONE,
+	    	ZIPCODE,
+	    	ADDRESS
+	    FROM USER_TABLE
+	    WHERE USER_TABLE.EMAIL = #{param1}
+	      AND USER_TABLE.PASSWORD = #{param2}
+  </select>
+  
+      <select id="getUserByEmail" resultType="User">
+	    SELECT
+	    	USERID,
+	    	USERNAME,
+	    	EMAIL,
+	    	PHONE,
+	    	ZIPCODE,
+	    	ADDRESS
+	    FROM USER_TABLE
+	    WHERE USER_TABLE.EMAIL = #{param1}
+  </select>
+  
+    <select id="getUserById" resultType="User">
+	    SELECT
+	    	USERID,
+	    	USERNAME,
+	    	EMAIL,
+	    	PHONE,
+	    	ZIPCODE,
+	    	ADDRESS
+	    FROM USER_TABLE
+	    WHERE USER_TABLE.userId = #{param1}
+  </select>
+  
+  
+     <update id="updateUser" parameterType="User">
+    	UPDATE USER_TABLE SET
+	    	userId = #{userId},
+	    	userName = #{userName},
+	    	password = #{password},
+	    	email = #{email},
+	    	phone = #{phone},
+	    	zipcode = #{zipcode},
+	    	address = #{address}
+    	WHERE USER_TABLE.EMAIL =#{email}
+    </update>
+    
+    <delete id="deleteUser">
+        	DELETE 
+        	FROM USER_TABLE
+        	WHERE USER_TABLE.userId = #{param1}
+    </delete>
+
+</mapper>

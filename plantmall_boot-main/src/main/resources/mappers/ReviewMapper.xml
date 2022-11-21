@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.plantmall.dao.mybatis.mapper.ReviewMapper">
+<cache />
+<!-- 	
+	<resultMap id="reviewAndLineItem" type="Review">
+		<id column="REVIEWID" property="reviewId" />
+		<result column="USERID" property="userId" />
+		<result column="PRODUTID" property="prductId"/>
+ 		<result column="ORDERID" property="orderId"/>
+ 		<result column="LINENUMBER" property="lineNumber"/>
+ 		<result column="REVIEWTITLE" property="reviewTitle"/>
+ 		<result column="REVIEWCONTENT" property="reviewContent" />
+ 		<result column="REVIEWDATE" property="reviewDate" />
+  		<collection property="lineItem" ofType="LineItem">
+    		<id column="ORDERID" property="orderId"/>
+    		<id column="LINENUMBER" property="lineNumber"/>
+    		<result column="PRODUCTID" property="productId"/>
+    		<result column="QUANTITY" property="quantity"/>
+    		<result column="UNITPRICE" property="unitPrice"/>
+    	</collection>
+	</resultMap> -->
+	
+	
+	<select id="getReview" resultType="Review">
+		SELECT REVIEWID, USERID, PRODUCTID, ORDERID, LINENUMBER, REVIEWTITLE, REVIEWCONTENT, REVIEWDATE
+		FROM REVIEW
+		WHERE USERID = #{userId} AND ORDERID = #{orderId} AND LINENUMBER = #{lineNumber}
+	</select>
+	
+	<select resultType="Review" id="getReviewsByProductId">
+		SELECT REVIEWID, USERID, PRODUCTID, ORDERID, LINENUMBER, REVIEWTITLE, REVIEWCONTENT, REVIEWDATE
+		FROM REVIEW WHERE PRODUCTID = #{productId} ORDER BY REVIEWDATE DESC
+	</select>
+
+	<select resultType="Review" id="getReviewByReviewId">
+		SELECT REVIEWID, USERID, PRODUCTID, ORDERID, LINENUMBER, REVIEWTITLE, REVIEWCONTENT, REVIEWDATE
+		FROM REVIEW WHERE REVIEWID = #{reviewId}
+	</select>
+
+	<insert id="insertReview" parameterType="Review">
+		INSERT INTO REVIEW
+		VALUES (#{reviewId}, #{userId}, #{reviewTitle}, #{productId}, #{reviewContent}, #{reviewDate}, #{orderId}, #{lineNumber})
+		<selectKey keyProperty="reviewId" resultType="int" order="BEFORE">
+			SELECT REVIEW_SEQ.NEXTVAL AS REVIEWID FROM DUAL
+		</selectKey>
+	</insert>
+
+	<update id="updateReview" parameterType="Review">
+		UPDATE REVIEW SET REVIEWTITLE = #{reviewTitle}, REVIEWCONTENT = #{reviewContent} WHERE REVIEWID = #{reviewId}
+	</update>
+</mapper>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>Insert title here</title>
+   	<link rel="stylesheet" href="../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}"> 
+   	<link rel="stylesheet" href="../../static/style/garam.css" type="text/css" >
+	
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+   	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<body onload="init();">
+	<div th:insert="~{header :: #top}"></div>
+
+<div>
+
+		<form name="form" method="get">
+<table style="border-collapse: collapse; width: 100%; height: 126px;" border="1">
+<tbody>
+<tr>
+<td style="width: 54.0168%; height: 50%; text-align: center;" rowspan="7">
+<img alt="등록된 이미지가 없습니다" th:src="@{/getByteImage?p_name=}+${funding.product.p_name}" style="width:318px; height:316px;" />
+</td>
+<td >FUNDING명</td>
+<td th:text="${funding.title}">&nbsp;</td>
+</tr>
+<tr>
+	<td>PRODUCT명</td>
+	<td th:text="${funding.product.p_name}">&nbsp;</td>
+</tr>
+<tr>
+<td>가격</td>
+<td th:text="${funding.product.price}">3,771,000원</td>
+</tr>
+
+<tr>
+<td>진행률</td>
+<td th:text="${funding.targetQuantity}">123%</td>
+</tr>
+
+<tr>
+<td>일정</td>
+<td th:text="${funding.openDate}">22-03-25</td>
+<td th:text="${funding.closeDate}"> 22-04-05</td>
+</tr>
+<tr >
+<td>배송</td>
+<td th:text="${funding.deliveryDate}">6월 20일(화) 도착 예정/배송비 0원</td>
+</tr>
+<div th:unless="${isSeller}">
+			<tr>
+				<td class="manageTable">주문 수량</td>
+				<td class="manageTable"> 
+					<input type=hidden name="sell_price" th:value="${funding.product.price}">
+					<input type="text" class="amount" name="amount" value="1" size="3" onchange="change();">
+					<input type="button" value=" + " onclick="add();"><input type="button" value=" - " onclick="del();">
+				</td>
+			</tr>
+			<tr>
+				<td class="manageTable" style="border-bottom: none">총 금액</td><!-- 구현 가능할지 의문. 상품금액x주문수량=총금액, 서버에서 +-작동 확인시 총금액 계산 구현 예정 -->
+				<td class="manageTable" style="border-bottom: none">
+					<span th:text="${funding.product.price}">3,771,000</span>
+					 x <span id="result_quantity">4</span> 
+					 = <b><input type="text" name="sum" size="11" readonly></b>원
+				</td>
+			</tr>
+</div>
+</tbody>
+</table>
+<div th:if="${isSeller}">
+	<p style="text-align: right;"><a th:href="@{/funding/update(fundingId=${funding.fundingId})}">수정하기</a></p>
+	<p style="text-align: right;"><a th:href="@{/funding/delete(fundingId=${funding.fundingId})}">삭제하기</a></p>
+</div>
+</form>
+<div th:unless="${isSeller}">
+	<p style="text-align: right;"><input type="button" value="구매하기" th:onclick="immediatelyOrder([[${funding.fundingId}]])"></p>
+</div>
+
+<p style="text-align: center;">&nbsp;</p>
+<p style="text-align: center;"><button>QnA </button><button>Review </button><button>community </button></p>
+<p style="text-align: center;">&nbsp;</p>
+<p><button>공구자 게시글 </button><button>모든 게시글 </button></p>
+<p style="text-align: right;"><button>작성하기</button></p>
+<table style="border-collapse: collapse; width: 100%; height: 72px;" border="1">
+<tbody>
+<tr style="height: 18px;">
+<td style="width: 18.2254%; height: 18px; text-align: center;">No.</td>
+<td style="width: 62.8297%; height: 18px; text-align: center;">title</td>
+<td style="width: 18.9448%; height: 18px; text-align: center;">date</td>
+</tr>
+<tr style="height: 18px;">
+<td style="width: 18.2254%; height: 18px; text-align: center;">&nbsp;</td>
+<td style="width: 62.8297%; height: 18px; text-align: center;">&nbsp;</td>
+<td style="width: 18.9448%; height: 18px; text-align: center;">&nbsp;</td>
+</tr>
+<tr style="height: 18px;">
+<td style="width: 18.2254%; height: 18px; text-align: center;">&nbsp;</td>
+<td style="width: 62.8297%; height: 18px; text-align: center;">&nbsp;</td>
+<td style="width: 18.9448%; height: 18px; text-align: center;">&nbsp;</td>
+</tr>
+<tr style="height: 18px;">
+<td style="width: 18.2254%; height: 18px; text-align: center;">&nbsp;</td>
+<td style="width: 62.8297%; height: 18px; text-align: center;">&nbsp;</td>
+<td style="width: 18.9448%; height: 18px; text-align: center;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+	<script th:inline="javascript">
+	
+	var sell_price;
+	var amount;
+	
+	function init () {
+		sell_price = document.form.sell_price.value;
+		amount = document.form.amount.value;
+		document.form.sum.value = sell_price;
+		document.getElementById('result_quantity').innerHTML = amount;
+		change();
+	}
+	
+	function add () {
+		hm = document.form.amount;
+		if (hm.value < 10){
+			sum = document.form.sum;
+			hm.value ++ ;
+	
+			sum.value = parseInt(hm.value) * sell_price;
+
+			document.getElementById('result_quantity').innerHTML = hm.value;
+		}
+	}
+	
+	function del () {
+		hm = document.form.amount;
+		sum = document.form.sum;
+			if (hm.value > 1) {
+				hm.value -- ;
+				sum.value = parseInt(hm.value) * sell_price;
+
+				document.getElementById('result_quantity').innerHTML = hm.value;
+			}
+	}
+	
+	function change () {
+		hm = document.form.amount;
+		sum = document.form.sum;
+	
+			if (hm.value < 0) {
+				hm.value = 0;
+			}
+		sum.value = parseInt(hm.value) * sell_price;
+	} 
+	function immediatelyOrder(fundingId) {
+		var quantity = $(".amount").val();
+		location.href= "/funding/newOrder?fundingId="+fundingId+"&quantity="+quantity;
+	}
+	
+	
+	</script>
+</body>
+</html>

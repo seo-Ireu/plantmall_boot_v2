@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}"> 
+	
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body>
+<div th:insert="~{header :: #top}"></div>
+<form th:action="@{/funding/create}" th:object="${fundingForm}" method="post">
+	<table style="border-collapse: collapse; width: 50%; height: 126px;" border="1" align="center">
+	<tbody>
+		<input th:if="*{funding.sellerId}" type="hidden" id="funding.sellerId" th:field="*{funding.sellerId}"/>
+		<input th:if="*{funding.fundingId}" type="hidden" id="funding.fundingId" th:field="*{funding.fundingId}"/>
+
+	<tr style="height: 18px;">
+	<td style="width: 12.6498%; height: 18px; text-align: center;">제품명</td>
+	<td style="width: 33.3333%; height: 18px; text-align: center;">
+	<input type="text" id="funding.title" th:field="*{funding.title}"/>
+	</td>
+	</tr>
+	
+	<tr style="height: 18px;">
+	<td style="width: 12.6498%; height: 18px; text-align: center;">제품 설명</td>
+	<td style="width: 33.3333%; height: 18px; text-align: center;">
+	<input type="text" id="funding.productInformation" th:field="*{funding.productInformation}"/>
+	</td>
+	</tr>
+	
+	<tr style="height: 18px;">
+	<td style="width: 12.6498%; height: 18px; text-align: center;">일정</td>
+	<td style="width: 33.3333%; height: 18px; text-align: center;">
+	<input type="date" id="funding.openDate" th:field="*{funding.openDate}"/>
+	~
+	<input type="date" id="funding.closeDate" th:field="*{funding.closeDate}"/>
+	</td>
+	</tr>
+	
+	<tr style="height: 18px;">
+	<td style="width: 12.6498%; height: 18px; text-align: center;">제품선택하기</td>
+	<td style="width: 33.3333%; height: 18px; text-align: center;">
+		<select th:field="*{funding.productId}">
+			<option th:each="ty:${productList}"
+			th:value="${ty.productId}"
+			th:utext="${ty.p_name}"></option>
+		</select>
+		
+	</td>
+	</tr>
+	
+	<tr style="height: 18px;">
+	<td style="width: 12.6498%; height: 18px; text-align: center;">목표 수량</td>
+	<td style="width: 33.3333%; height: 18px; text-align: center;">
+	<input type="text" id="funding.targetQuantity" th:field="*{funding.targetQuantity}"/>
+	</td>
+	</tr>
+	
+	<tr style="height: 18px;">
+	<td style="width: 12.6498%; height: 18px; text-align: center;">예상 배송일</td>
+	<td style="width: 33.3333%; height: 18px; text-align: center;">
+	<input type="date" id="funding.deliveryDate" th:field="*{funding.deliveryDate}"/>
+	</td>
+	</tr>
+	
+	<tr style="height: 18px;">
+	<td style="width: 12.6498%; height: 18px; text-align: center;">이미지 선택</td>
+	<td style="width: 33.3333%; height: 18px; text-align: center;">
+	<input type="file" accept="image/*,.txt" multiple/>
+	</td>
+	</tr>	
+
+
+	<tr style="height: 18px;">
+	<td colspan="2" style="width: 33.3333%; height: 18px; text-align: right;">
+		<input type="submit" value="등록"/>
+	</td>
+	</tr>
+
+	</tbody>
+	</table>
+</form>
+</body>
+</html>

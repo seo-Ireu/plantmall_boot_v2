@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.example.plantmall.dao.mybatis.mapper.ProfileMapper">
+
+	<cache />
+
+	<select id="getProfileByUserId" parameterType="String"
+		resultType="Profile">
+		SELECT
+		PROFILEID,
+		PROFILEIMG,
+		FEEDCNT,
+		FOLLOWERCNT,
+		FOLLOWINGCNT,
+		NICKNAME,
+		INTRODUCE,
+		USERID
+		FROM PROFILE
+		WHERE PROFILE.USERID = #{userId}
+	</select>
+	
+	<insert id="createProfile" parameterType="Profile">
+		<selectKey keyProperty="profileId" resultType="Int" order="BEFORE">
+			SELECT PROFILE_SEQ.NEXTVAL AS profileId FROM DUAL
+		</selectKey>
+    	INSERT INTO PROFILE
+    	(profileId,profileImg,FeedCnt,followerCnt,followingCnt,nickName,introduce,userId)
+    	VALUES
+    	(#{profileId},#{profileImg},0,0,0,#{nickName},#{introduce},#{userId})
+    	
+    	
+    </insert>
+	
+	<update id="updateProfile" parameterType="Profile">
+		UPDATE PROFILE
+		SET
+		PROFILEIMG = #{profileImg},
+		NICKNAME = #{nickName},
+		INTRODUCE = #{introduce}
+		WHERE
+		PROFILE.userId = #{userId}
+	</update>
+
+	
+
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.plantmall.dao.mybatis.mapper.CartItemMapper">
+<cache />
+
+	<select id="getCartItemList" resultType="CartItem">
+		SELECT USERID, PRODUCTID, QUANTITY, UNITPRICE, LISTPRICE FROM CARTITEM
+		WHERE USERID = #{userId}
+	</select>
+	
+	<select id="getCartItemByProductId" resultType="CartItem">
+		SELECT USERID, PRODUCTID, QUANTITY, UNITPRICE, LISTPRICE FROM CARTITEM
+		WHERE PRODUCTID = #{productId}
+	</select>
+	
+	<insert id="insertCartItem">
+		INSERT INTO CARTITEM (USERID, PRODUCTID, QUANTITY, UNITPRICE, LISTPRICE)
+		VALUES (#{userId}, #{productId}, #{quantity}, #{unitPrice}, #{listPrice})
+	</insert>
+	
+	<delete id="deleteCartItem">
+		DELETE FROM CARTITEM
+		WHERE PRODUCTID = #{productId} and USERID = #{userId}
+	</delete>
+	
+	<update id="updateCartItem">
+		UPDATE CARTITEM SET QUANTITY = #{quantity}, LISTPRICE = #{quantity} * #{unitPrice}
+		WHERE PRODUCTID=#{productId} and USERID=#{userId}
+		
+	</update>
+	
+	<select id="sumMoney" resultType="integer">
+		SELECT SUM(LISTPRICE) AS TOTALPRICE 
+		FROM CARTITEM WHERE USERID = #{userId}
+	</select>
+	
+</mapper>

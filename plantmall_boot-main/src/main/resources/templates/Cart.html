@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../static/style/garam.css" type="text/css" >
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}"> 
+	
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+	<div th:insert="~{header :: #top}"></div>
+	<div class="wishList">
+		<script th:inline="javascript">
+			function itemSum() {
+				var str = "";
+				var sum = 0;
+				
+				var count = $(".chkbox").length;
+				var amount = 0;
+				var fee = 0;
+
+				for (var i = 0; i < count; i++) {
+		            if ($(".chkbox")[i].checked == true) {
+		                sum += parseInt($(".chkbox")[i].value);
+		                amount++;
+		            }
+		        }
+				if (amount > 0) {
+					fee = 3000;
+					sum += 3000;
+				}
+		        $("#total_sum").html(sum);
+		        $("#deliveryFee").html(fee);
+		        $("#amount").html(amount);
+			}
+			
+			function updateByProductId(id, q, op) {
+				var quantity;
+				if (op == "+") quantity = q + 1;
+				else quantity = q - 1;
+				$.ajax({
+		    		url : "/cart/updateCartItem",
+		    		type : "post",
+		   			data : { 
+		   				productId : id, 
+		   				quantity : quantity },
+		    		success : function(result){
+		    			location.reload();
+		    		}
+		   		})
+		   	}
+			
+			function deleteByProductId(pId, uId) {
+				var confirm_val = confirm("정말 삭제하시겠습니까?");
+				 
+				 if(confirm_val) {
+			   		$.ajax({
+			    		url : "/cart/deleteCartItem",
+			    		type : "post",
+			   			data : { productId : pId,
+			   				userId : uId },
+			    		success : function(result){
+			    			location.reload();
+			    		},
+			    		fail : function(result) {
+			    			alert('실패');
+			    		}
+			   		});
+			 	}
+			}
+		
+		</script>
+		<div class="listCheck">
+			<span> <input type="checkbox" name="allCheck" id="allCheck" checked />
+			<script>
+				$("#allCheck").click(function () {
+	                var chk = $("#allCheck").is(":checked");
+	                if (chk) {
+	                    $(".chkbox").prop("checked", true);
+	                    itemSum();
+	                } else {
+	                    $(".chkbox").prop("checked", false);
+	                    itemSum();
+	                }
+	            });
+			</script></span>
+			<b><span>전체 선택</span></b>		
+		</div>
+		<div class="cartList">
+			<div class="left">
+				<table class="cartElement">
+					<tbody>
+						<tr th:if="${cart.numberOfItems} == 0" style="border: none; width: 85%">
+							<td style="text-align:center;" colspan="8"><b>장바구니가 비어있습니다.</b></td>
+						</tr>
+							<tr th:each="cartItem: ${cart.cartItemList}">
+								<td>
+									<span class="selectItemBox">
+										<input type="checkbox" class="chkbox" id="chkbox" th:attr="data-cartNum=${cartItem.productId}" name="selectItem" 
+										th:value="${cartItem.listPrice}" onClick="itemSum()">
+										<script>
+											 $(".chkbox").click(function(){
+											  $("#allCheck").prop("checked", false);
+											 });
+										</script>
+									</span> 
+									<span class="deleteItemBox">
+										<label for="deleteItem"></label>
+										<input type="hidden" id="userId" th:value="${cartItem.userId}" />
+										<input type="button" id="deleteItemBox" value='X' th:onclick= "deleteByProductId([[${cartItem.productId}]], [[${cartItem.userId}]])" >
+									</span>
+									<div class="cartItemBox" th:object="${cartItem.product}">
+										<div class="imgBox">
+											<a href="#" th:href="@{/product/detail(productId=${cartItem.productId})}">
+											<img th:src="@{/getByteImage?p_name=} + ${cartItem.product.p_name}" /></a>
+										</div>
+										<div class="content">
+											<p>
+												<span class="productName" th:text="${cartItem.product.p_name}">제품 이름</span>
+												<br><br><br>
+												<ul class="quantityPrice">
+													<li>
+														<input type="button" th:if="${cartItem.quantity} &gt; 1" value="-" th:onclick="updateByProductId([[${cartItem.productId}]], [[${cartItem.quantity}]], '-')" />
+														<span th:text=${cartItem.quantity}>1</span>개
+														<input type="button" value="+" th:onclick="updateByProductId([[${cartItem.productId}]], [[${cartItem.quantity}]], '+')" />
+													</li>
+												</ul>
+												<div class="itemPrice">
+													<span id="itemPrice" th:text="${cartItem.listPrice}">16000</span>원
+												</div>
+												
+										</div>		
+									</div>
+								</td>
+							</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- left 끝남 -->
+			<div class="right">
+				<table class="cartPriceTable">
+					<tbody>
+						<tr>
+							<th colspan="2">전체주문금액</th>
+						</tr>
+						<tr>
+							<td> 선택 상품 수 </td>
+							<td class="txtRight">
+								<span class="amount" id="amount">0</span> 개
+							</td>
+						</tr>
+						<tr>
+							<td> 배송비 </td>
+							<td class="txtRight">
+								<span class="deliveryFee" id="deliveryFee">0</span> 원
+							</td>
+						</tr>
+						<tr>
+							<td class="finalPrice"> 결제 예정 금액 </td>
+							<td class="txtRight finalPrice">
+								<span class="total_sum" id="total_sum" th:text="${sum}">0</span> 원
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div>
+					<a href="javascript:void(0)" class="button newOrder_btn">주문하기</a>
+					<script th:inline="javascript">
+						$(".newOrder_btn").click(function() {
+							var checkArr = new Array();
+							$("input[class='chkbox']:checked").each(function() {
+								checkArr.push($(this).attr("data-cartNum"));
+							});
+							location.href="/order/newOrder?chkbox=" + checkArr;
+						});
+					</script>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 페이지 들어오자마자 체크박스  체크 -->
+	<script>
+		var tt = "${cart}";
+		if (tt == 'false') {
+			$("#allCheck").prop("checked", false);
+		} else {
+			$("#allCheck").prop("checked", true);
+			$(".chkbox").prop("checked", true);
+			itemSum();
+		}
+	</script>
+</body>
+</html>

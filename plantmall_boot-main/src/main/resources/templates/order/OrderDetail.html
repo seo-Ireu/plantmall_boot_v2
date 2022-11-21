@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../../static/style/garam.css" type="text/css" >
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}"> 
+	
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body>
+<hr>
+	<div th:insert="~{header :: #top}"></div>
+	<div class="orderPage">
+		<div class="pageTitle">
+			<b><span th:text="${#dates.format(order.orderDate, 'yyyy.MM.dd')}">2022.04.09</span> 주문 상세보기</b>
+		</div>	
+		<div class="orderDetail">
+			<div class="orderList">
+				<table class="orderDetailElement">
+					<tbody>
+						<tr th:each="lineItem: ${order.lineItems}">
+							<td>
+								<div class=ReviewContent>
+									<div class="ReviewImgBox">
+										<a href="#" th:href="@{/product/detail(productId=${lineItem.product.productId})}">
+										<img th:src="@{/getByteImage?p_name=} + ${lineItem.product.p_name}" /></a>
+									</div>
+									<div class="DetailElementsContent">
+										<span th:text="${lineItem.product.p_name}">제품 이름</span>
+										<span>
+											<a href="#" th:if="${status != 1}" th:href="@{/review/check(userId=${order.userId}, orderId=${order.orderId}, lineNumber=${lineItem.lineNumber})}" class="reviewBtn">
+											리뷰</a>
+										</span>
+
+										<br><br>
+										<span class="quantity" th:text="|제품 가격: ${lineItem.unitPrice}원|">16000</span>
+										<br>
+										<span class="quantity" th:text="|수량: ${lineItem.quantity}개|">1</span>
+										<span class="itemPrice" th:text="|${lineItem.unitPrice * lineItem.quantity}원|">16000</span>
+									</div>
+								</div>
+								<div>
+									
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="priceSum">
+								<p>총 결제 금액 <span th:text="${order.totalPrice + 3000}">16000</span>원</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="orderInfo">
+			<div class="formWrap">
+				<div class="formTitle">주문자 정보</div>
+				<div class="formRow">
+					<div class="formCol head">이름</div>
+					<div class="formCol body">
+						<span th:text="${order.userName}">서가람</span>
+					</div>
+				</div>
+ 				<div class="formRow">
+					<div class="formCol head">휴대폰</div>
+					<div class="formCol body">
+						<span th:text="${order.phoneNumber}">01012345678</span>	
+					</div>
+				</div>
+				<div class="formRow">
+					<div class="formCol head">주소</div>
+					<div class="formCol body">
+						<span th:text="${order.shipAddress}">경기도 어쩌고 저쩌고</span>	
+					</div>
+				</div>
+			</div>
+			<!-- 결제 정보 -->
+			<div class="formWrap">
+				<div class="formTitle">결제 정보</div>
+				<div class="formRow">
+					<div class="formCol head">카드 타입</div>
+					<div class="formCol body">
+						<span th:text="${order.cardType}">Visa</span>	
+					</div>
+				</div>
+				<div class="formRow">
+					<div class="formCol head">카드 번호</div>
+					<div class="formCol body">
+						<span th:text="${order.creditCard}">99999999999</span>	
+					</div>
+				</div>
+				<div class="formRow">
+					<div class="formCol head">유호기간 (MM/YY)</div>
+					<div class="formCol body">
+						<span th:text="${order.expiryDate}">25/09</span>	
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="lastBtn">
+			<a href="#" class="button" th:href="@{/order/list}">확인</a>
+		</div>
+	</div>
+</body>
+</html>

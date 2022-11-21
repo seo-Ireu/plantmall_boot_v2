@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css"
+	th:href="@{../static/style/sewon.css}">
+
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css" rel="stylesheet"
+	type="text/css" th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body onload="init();">
+	<div th:insert="~{header :: #top}"></div>
+
+	<h3>검색 결과</h3>
+	<h4 th:text="${categoryName}">카테고리 이름</h4>
+	<h5 th:text="총+' '+${total}+건이+' '+검색되었습니다."></h5>
+	<div align="center">
+		카테고리: <a href="" th:href="@{/product/list}">전체</a> | <a href=""
+			th:href="@{/product/list?categoryId=c1}">꽃</a> | <a href=""
+			th:href="@{/product/list?categoryId=c2}">야생화</a> | <a href=""
+			th:href="@{/product/list?categoryId=c3}">허브</a> | <a href=""
+			th:href="@{/product/list?categoryId=c4}">나무</a> | <a href=""
+			th:href="@{/product/list?categoryId=c5}">다육</a> | <a href=""
+			th:href="@{/product/list?categoryId=c6}">해조</a> | <a href=""
+			th:href="@{/product/list?categoryId=c7}">원예용품</a>
+		<table class="noLineTable">
+			<tr th:each="miniProductList, iterStat : ${productList}">
+				<td th:each="product, miniIterStat : ${miniProductList}">
+					<div>
+						<a href=""
+							th:href="@{/product/detail?productId=}+${product.productId}">
+							<img alt="등록된 이미지가 없습니다"
+							th:src="@{/getByteImage?p_name=}+${product.p_name}"
+							style="width: 200px; height: 200px;" />
+						</a>
+						<div>
+							<a href=""
+								th:href="@{/product/detail?productId=}+${product.productId}"
+								th:text="${userNameList.get(iterStat.index).get(miniIterStat.index)}">판매자명</a>
+						</div>
+						<div>
+							<a href=""
+								th:href="@{/product/detail?productId=}+${product.productId}"
+								th:text="${product.p_name}">제품명</a>
+						</div>
+						<div>
+							<a href=""
+								th:href="@{/product/detail?productId=}+${product.productId}"
+								th:text="${product.price}+원">가격</a>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

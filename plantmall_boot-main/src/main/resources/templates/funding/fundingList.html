@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css"
+	th:href="@{../static/style/sewon.css}">
+
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body>
+<div th:insert="~{header :: #top}"></div>
+
+	
+	<h2>펀딩 목록</h2>
+	<div align="center">
+		<table class="noLineTable">
+			<tr th:each="funding : ${fundingList}">
+				<td>
+					<a href="" th:href="@{/funding/{fundingId}(fundingId=${funding.fundingId})}" name="productId" value="${funding.productId}">				
+		 				<img alt="등록된 이미지가 없습니다" th:src="@{/getByteImage?p_name=}+${funding.p_name}" style="width:200px; height:200px;" />
+		 				<div th:if="${funding.status}==1">
+			 				<div th:text="|${#dates.format(funding.openDate,'yy.MM.dd')}~${#dates.format(funding.closeDate,'yy.MM.dd')}|">22-04-09 ~ 22-04-20</div>
+	 						<div th:text="${funding.title}">제품명</div>
+							<div th:text="(${funding.orderNum}/${funding.targetQuantity})*100+'%'">달성률</div>
+		 				</div>
+		 				<div th:if="${funding.status}==0">
+			 				<div><strike th:text="|${#dates.format(funding.openDate,'yy.MM.dd')}~${#dates.format(funding.closeDate,'yy.MM.dd')}|"></strike></div>
+	 						<div><strike th:text="${funding.title}"></strike></div>
+							<div><strike  th:text="(${funding.orderNum}/${funding.targetQuantity})*100+'%'"></strike></div>
+		 				</div>
+					</a>
+					
+				</td>
+			</tr>
+		</table>
+		</div>
+</body>
+</html>

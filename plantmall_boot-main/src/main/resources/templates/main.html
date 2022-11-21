@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>식몰</title>
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css"
+	th:href="@{../static/style/sewon.css}">
+<link rel="stylesheet"
+	href="https://unpkg.com/swiper/swiper-bundle.min.css">
+		
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<style>
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.swiper-container{
+	margin: 10px;
+	width: 680px;
+	height: 680px;
+	overflow: hidden;
+}
+.hovertext{
+	background: #000000;
+	opacity: 0;
+}
+.swiper-slide:hover .hovertext{
+	opacity: 0.5;
+	text-align: center;
+	color:#ffffff;
+}
+.swiper-slide img {
+	width: 680px;
+	height: 680px;
+}
+.colMain {
+	margin: 10px;
+}
+
+.colMain > div {
+	margin-bottom: 5px;
+}
+
+.colMain img {
+	width: 200px;
+	height: 200px;
+}
+
+.colMain div:hover .hovertext{
+	opacity: 0.5;
+	text-align: center;
+	color:#ffffff;
+}
+</style>
+<body>
+	<div th:insert="~{header :: #top}"></div>
+	<div class="main" align="center">
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide" th:each="bestItem, iterStat : ${bestItemList5}">
+					<div class="hovertext">BEST</div>
+					<a href="" th:href="@{/product/detail?productId=}+${bestItem.productId}">
+						<img th:src="@{/getByteImage?p_name=}+${bestItem.p_name}" alt="best" />
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="colMain">
+			<div>
+				<div class="hovertext">PLANT</div>
+				<a href="" th:href="@{/product/list}">
+					<img th:src="@{/getByteImage?p_name=}+${plant.p_name}" alt="식물">
+				</a>
+			</div>
+			<div>
+				<div class="hovertext">GARDENING SUPPLIES</div>
+				<a href="" th:href="@{/product/list?categoryId=c7}">
+					<img th:src="@{/getByteImage?p_name=}+${gardeningSupplies.p_name}" alt="원예용품">
+				</a>
+			</div>
+			<div>
+				<div class="hovertext">FUNDING</div>
+				<a href="" th:href="@{/funding}">
+					<img th:src="@{/getByteImage?p_name=}+${productHaveFunding.p_name}" alt="펀딩">
+				</a>
+			</div>
+		</div>
+	</div>
+	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+	<script>
+		new Swiper('.swiper-container', {
+			autoplay : {
+				delay : 2500,
+				disableOnInteraction : false,
+			},
+			loop : true
+		//반복 재생 여부
+		});
+	</script>	
+</body>
+</html>

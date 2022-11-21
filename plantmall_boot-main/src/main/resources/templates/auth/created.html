@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css"
+	th:href="@{../static/style/sewon.css}">
+
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body>
+<div th:insert="~{header :: #top}"></div>
+
+<div th:if="${isNewUser}">
+	<h1 style="text-align: center;"><span style="background-color: #339966; color: #333333;">회원 가입을 축하합니다</span></h1>
+</div>
+<div th:unless="${isNewUser}">
+	<h1 style="text-align: center;"><span style="background-color: #339966; color: #333333;">수정되었습니다.</span></h1>
+</div>
+
+<table align="center">
+<tbody >
+<tr>
+<td>ID</td>
+<td  th:text="|>>${session.userSession.user.userId}"|></td>
+</tr>
+<tr>
+<td>NAME</td>
+<td th:text="|>>${session.userSession.user.userName}|"></td>
+</tr>
+<tr >
+<td >EMAIL</td>
+<td  th:text="|>>${session.userSession.user.email}|"></td>
+</tr>
+<tr>
+<td >PHONE</td>
+<td  th:text="|>>${session.userSession.user.phone}|"></td>
+</tr>
+<tr >
+<td >ZIPCODE</td>
+<td  th:text="|>>${session.userSession.user.zipcode}|"></td>
+</tr>
+<tr >
+<td >ADDRESS</td>
+<td  th:text="|>>${session.userSession.user.address}|"></td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: center;"><a href="/">메인으로</a></p>
+</body>
+</html>

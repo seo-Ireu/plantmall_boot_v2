@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}"> 
+
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body>
+<div th:insert="~{header :: #top}"></div>
+<div align="center">
+	<ul class="list-group" style="width:25%;">
+		<li class="list-group-item">
+			<a href="" th:href="@{/auth/update}">계정 수정</a>
+		</li>
+		<li class="list-group-item">
+			<a href="" th:href="@{/auth/delete}">계정 삭제</a>
+		</li>
+		<li class="list-group-item">
+			<a th:href="@{/funding/order}">펀딩 관리</a>
+		</li>
+		<li>
+			<a href="" th:href="@{/myProfile}">프로필</a>
+
+		</li>
+	</ul>
+</div>
+
+</body>
+</html>

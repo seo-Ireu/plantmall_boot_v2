@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../../static/style/garam.css" type="text/css" >
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}">
+	
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+<script>
+	function MoveFocus() {
+		document.rForm.rtitle.focus();
+		return;
+	}
+</script>
+</head>
+<body onload="MoveFocus();">
+<div th:insert="~{header :: #top}"></div>
+	<div class="enquiryForm">
+		<form name="rForm" action="#" th:action="@{/enquiry/updateEnquirySubmitted}" th:object="${enqForm}" method="post">
+			<div class="formWrap">
+				<div class="write_area">
+					<div class="rFormCol reviewBody">
+						<textarea th:field="*{enquiry.enqContent}" rows="20" required>문의 내용</textarea>
+					</div>
+				</div>
+				<div>
+					<button type="submit" class="gButton">문의 수정</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

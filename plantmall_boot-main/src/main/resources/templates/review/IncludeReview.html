@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+</head>
+<div class="includeReview" th:fragment="includeReview">
+	<table class="reviewElements">
+		<tbody>
+			<tr th:if="${#lists.size(reviewList)} == 0">
+				<td style="text-align:center;" colspan="8">	리뷰가 없습니다.</td>
+			</tr>
+			<tr th:each="review:${reviewList}">
+				<td>
+					<div class="review">
+						<div class="nameDate">
+							<span th:text="|${review.userName}&nbsp&nbsp|">서가람</span>
+							<span th:text="${#dates.format(review.reviewDate, 'yyyy.MM.dd HH:mm')}">2022-4-15</span>
+						</div>
+						<p class="IncludeReviewTitle"th:text="|제목: ${review.reviewTitle}|">리뷰 제목</p>
+						<p th:text="${review.reviewContent}">리뷰 내용</p>
+						<div class="updateReview" th:if="*{userId}">
+							<a href="#" class="btnUpdate" th:href="@{/review/UpdateReview}">수정</a>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</html>

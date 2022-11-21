@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.plantmall.dao.mybatis.mapper.OrderMapper">
+<cache />
+
+	<select resultType="Order" id="getOrder">
+		SELECT ORDERID, USERID, USERNAME, ORDERDATE, SHIPADDRESS, CREDITCARD, EXPIRYDATE, CARDTYPE, PHONENUMBER 
+		FROM ORDER_TABLE WHERE ORDER_TABLE.ORDERID = #{orderId}
+	</select>
+
+	<select resultType="Order" id="getOrdersByUserId">
+		SELECT ORDERID, USERID, USERNAME, ORDERDATE, SHIPADDRESS, CREDITCARD, EXPIRYDATE, CARDTYPE, PHONENUMBER
+		FROM ORDER_TABLE WHERE ORDER_TABLE.USERID = #{userId} ORDER BY ORDERDATE DESC
+	</select>
+
+	<insert id="insertOrder" parameterType="Order">
+		INSERT INTO ORDER_TABLE
+		VALUES (#{orderId}, #{shipAddress}, #{totalPrice}, #{creditCard}, #{expiryDate}, #{userId}, #{orderDate}, #{cardType}, #{userName}, #{phoneNumber})
+		<selectKey keyProperty="orderId" resultType="int" order="BEFORE">
+			SELECT ORDER_SEQ.NEXTVAL AS ORDERID FROM DUAL
+		</selectKey>
+	</insert>
+
+	<resultMap id="OrderAndLineItemMap" type="Order">
+		<id column="ORDERID" property="orderId" />
+		<result column="USERID" property="userId" />
+		<result column="USERNAME" property="userName"/>
+ 		<result column="ORDERDATE" property="orderDate"/>
+ 		<result column="PHONENUMBER" property="phoneNumber"/>
+ 		<result column="SHIPADDRESS" property="shipAddress"/>
+ 		<result column="CREDITCARD" property="creditCard" />
+ 		<result column="EXPIRYDATE" property="expiryDate" />
+ 		<result column="CARDTYPE" property="cardType" />
+  		<collection property="lineItems" ofType="LineItem">
+    		<id column="ORDERID" property="orderId"/>
+    		<id column="LINENUMBER" property="lineNumber"/>
+    		<result column="PRODUCTID" property="productId"/>
+    		<result column="QUANTITY" property="quantity"/>
+    		<result column="UNITPRICE" property="unitPrice"/>
+    	</collection>
+	</resultMap>
+	
+	<select id="getOrderAndLineItems" resultMap="OrderAndLineItemMap">
+		SELECT ORDER_TABLE.ORDERID, USERID, USERNAME, ORDERDATE, SHIPADDRESS, CREDITCARD, EXPIRYDATE, CARDTYPE, PHONENUMBER, LINEITEM.LINENUMBER, LINEITEM.PRODUCTID,
+		LINEITEM.QUANTITY, LINEITEM.UNITPRICE
+		FROM ORDER_TABLE, LINEITEM
+		WHERE ORDER_TABLE.ORDERID = #{orderId} AND ORDER_TABLE.ORDERID = LINEITEM.ORDERID
+	</select>
+</mapper>

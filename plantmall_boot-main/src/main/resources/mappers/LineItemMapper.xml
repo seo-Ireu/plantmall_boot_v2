@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.plantmall.dao.mybatis.mapper.LineItemMapper">
+<cache />
+	
+	<resultMap id="LineItemAndProduct" type="LineItem">
+		<id column="LINENUMBER" property="lineNumber" />
+		<result column="QUANTITY" property="quantity" />
+		<result column="UNITPRICE" property="unitPrice"/>
+ 		<result column="PRODUCTID" property="productId"/>
+  		<collection property="product" ofType="Product">
+    		<id column="PRODUCTID" property="productId"/>
+    		<result column="pNAME" property="p_name"/>
+    		<result column="PRODUCTIMG" property="productImg"/>
+    	</collection>
+	</resultMap>
+	
+	<select id="getLineItemsByOrderId" resultType="LineItem">
+		SELECT
+      		ORDERID,
+      		LINENUMBER
+      		PRODUCTID,
+      		QUANTITY,
+      		UNITPRICE
+    	FROM LINEITEM
+    	WHERE ORDERID = #{orderId}
+  	</select>
+  	
+  	<select id="getLineItem" resultMap="LineItemAndProduct">
+		SELECT
+      		ORDERID, LINENUMBER, LINEITEM.PRODUCTID, QUANTITY, UNITPRICE, pNAME, PRODUCTIMG
+    	FROM LINEITEM, PRODUCT
+    	WHERE LINEITEM.ORDERID = #{orderId} AND LINEITEM.LINENUMBER = ${lineNumber} AND LINEITEM.PRODUCTID = PRODUCT.PRODUCTID
+  	</select>
+
+  	<insert id="insertLineItem">
+   		INSERT INTO LINEITEM (ORDERID, LINENUMBER, PRODUCTID, QUANTITY, UNITPRICE)
+    	VALUES (#{orderId}, #{lineNumber}, #{productId}, #{quantity}, #{unitPrice})
+  	</insert>
+
+</mapper>

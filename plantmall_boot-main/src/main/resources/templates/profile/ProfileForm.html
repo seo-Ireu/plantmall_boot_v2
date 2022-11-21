@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../../static/style/user.css" type="text/css" >
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}">
+	
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body>
+	<div th:insert="~{header :: #top}"></div>
+	<div th:if="${newProfile}"><h1 style="text-align: center;">새로운 프로필</h1></div>
+	<div th:unless="${newProfile}"><h1 style="text-align: center;">프로필 수정</h1></div>
+	<br><br>
+	<form id="profileUpdate" action="" th:object="${profileForm}"method="post" enctype="multipart/form-data">
+		<table class="updateTable">
+			<tr>
+				<td>프로필 사진</td>
+				<td>				
+					<div class="selectedImg"><img src="@{/getImage/?imageId=}+*{profile.profileImg}" th:attr="src=@{images/logoTemp.svg}" style="width:150px; height:150px"/></div>
+					<input type="file" id="imgFile" name="fileUrl"/>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>닉네임</td>
+				<td><input type="text" id="nickName" th:field="*{profile.nickName}" placeholder="닉네임을 입력하세요"></td>
+			</tr>
+			<tr>
+				<td>소개 글</td>
+				<td><input type="text" id="introduce" th:field="*{profile.introduce}" placeholder="자신을 소개해보세요"></td>
+			</tr>
+		</table>
+		<input type="submit" value="완료">
+	</form>
+</body>
+<script>
+	
+	$("#imgFile").change(function(){
+		if(this.files && this.files[0]) {
+		    var reader = new FileReader;
+		    reader.onload = function(data) {
+		    $(".selectedImg img").attr("src", data.target.result).width(500);
+		  }
+		    reader.readAsDataURL(this.files[0]);
+		   }
+		  });
+</script>
+
+</html>

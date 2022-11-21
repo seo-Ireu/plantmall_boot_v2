@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.plantmall.dao.mybatis.mapper.communityMapper">
+
+<resultMap id="associationResultMap" type="community">
+	<id column="" property="communityId"/>
+	<result column="CCOMMENT" property="cComment"/>
+	<result column="FUNDINGID" property="fundingId"/>
+	<result column="USERID" property="userId"/>
+	<result column="TITLE" property="title"/>	
+	<result column="CREATE_AT" property="create_at"/>
+	<association column="CCID" property="communityCategory" javaType="CommunityCategory">
+		<id column="CCID" property="ccId"/>
+		<result column="CCNAME" property="ccName"/>
+		<result column="ISFORSELLER" property="isForSeller"/>
+	</association>
+</resultMap>
+
+</mapper>

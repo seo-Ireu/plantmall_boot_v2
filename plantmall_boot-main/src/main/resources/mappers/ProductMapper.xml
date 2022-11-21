@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.example.plantmall.dao.mybatis.mapper.ProductMapper">
+
+	<select id="getProduct" parameterType="String"
+		resultType="Product">
+		SELECT
+		PRODUCTID,
+		CATEGORYID,
+		USERID,
+		PNAME as p_name,
+		DESCRIPTION,
+		PRICE,
+		PRODUCTIMG
+		FROM PRODUCT
+		WHERE PRODUCTID = #{productId}
+	</select>
+
+	<select id="getProductHaveLineItem" parameterType="String"
+		resultType="Product">
+		SELECT
+		p.PRODUCTID,
+		CATEGORYID,
+		p.USERID,
+		PNAME as p_name,
+		DESCRIPTION,
+		PRICE,
+		PRODUCTIMG
+		FROM PRODUCT p, LineItem l
+		WHERE
+		p.PRODUCTID = l.PRODUCTID
+		and p.PRODUCTID = #{productId}
+	</select>
+	
+	<select id="getProductHaveCartItem" parameterType="String"
+		resultType="Product">
+		SELECT
+		p.PRODUCTID,
+		CATEGORYID,
+		p.USERID,
+		PNAME as p_name,
+		DESCRIPTION,
+		PRICE,
+		PRODUCTIMG
+		FROM PRODUCT p, CartItem c
+		WHERE
+		p.PRODUCTID = c.PRODUCTID
+		and p.PRODUCTID = #{productId}
+	</select>
+
+	<select id="getProductListByCategory" parameterType="String"
+		resultType="Product">
+		SELECT
+		PRODUCTID,
+		CATEGORYID,
+		USERID,
+		PNAME as p_name,
+		DESCRIPTION,
+		PRICE,
+		PRODUCTIMG
+		FROM PRODUCT
+		WHERE CATEGORYID = #{value}
+	</select>
+
+	<select id="searchProductList"
+		parameterType="com.example.plantmall.controller.Product.SearchValueCommand"
+		resultType="Product">
+		SELECT
+		PRODUCTID,
+		CATEGORYID,
+		USERID,
+		PNAME as p_name,
+		DESCRIPTION,
+		PRICE,
+		PRODUCTIMG
+		FROM PRODUCT
+		<where>
+			<if test="categoryId != null">
+				CATEGORYID = #{categoryId}
+			</if>
+			<if test="keyword != null">
+				AND (PNAME LIKE '%'||#{keyword}||'%'
+				OR DESCRIPTION LIKE
+				'%'||#{keyword}||'%')
+			</if>
+			<if test="lowPrice != null and highPrice != null">
+				AND PRICE BETWEEN #{lowPrice} AND #{highPrice}
+			</if>
+			<if test="lowPrice == null and highPrice != null">
+				AND PRICE BETWEEN 0 AND #{highPrice}
+			</if>
+			<if test="lowPrice != null and highPrice == null">
+				AND PRICE BETWEEN 0 AND #{lowPrice}
+			</if>
+		</where>
+	</select>
+
+	<select id="getAllProduct" resultType="Product">
+		SELECT
+		PRODUCTID,
+		CATEGORYID,
+		USERID,
+		PNAME as p_name,
+		DESCRIPTION,
+		PRICE,
+		PRODUCTIMG
+		FROM
+		PRODUCT
+	</select>
+
+	<select id="getProductListforUser" parameterType="String"
+		resultType="Product">
+		SELECT
+		PRODUCTID,
+		CATEGORYID,
+		USERID,
+		PNAME as p_name,
+		DESCRIPTION,
+		PRICE,
+		PRODUCTIMG
+		FROM PRODUCT
+		WHERE USERID = #{userId}
+	</select>
+	<insert id="insertProduct" parameterType="Product">
+		<selectKey keyProperty="productId" resultType="String"
+			order="BEFORE">
+			SELECT Product_seq.nextval AS productId FROM DUAL
+		</selectKey>
+		INSERT INTO PRODUCT (PRODUCTID, CATEGORYID, PNAME, DESCRIPTION, PRICE,
+		PRODUCTIMG, USERID)
+		VALUES ( #{productId}, #{categoryId}, #{p_name},
+		#{description}, #{price}, #{productImg}, #{userId})
+
+	</insert>
+
+	<update id="updateProduct" parameterType="Product">
+		UPDATE PRODUCT
+		SET
+		CATEGORYID = #{categoryId}, PNAME = #{p_name}, DESCRIPTION =
+		#{description}, PRICE = #{price}, PRODUCTIMG = #{productImg}
+		WHERE
+		PRODUCTID = #{productId} and USERID = #{userId}
+	</update>
+
+	<delete id="deleteProduct" parameterType="Product">
+		DELETE
+		FROM PRODUCT
+		WHERE PRODUCTID = #{productId}
+		and USERID = #{userId}
+	</delete>
+
+	<delete id="deleteContentHaveProduct" parameterType="Product">
+		DELETE
+		FROM
+		CONTENT
+		WHERE PRODUCTID = #{productId}
+		and USERID = #{userId}
+	</delete>
+
+	<!-- 이미지 저장 -->
+	<insert id="saveProductImage">
+		<![CDATA[
+		insert into PRODUCTIMG_TABLE (PRODUCTIMGIDX, PRODUCTIMGVALUE)
+		values (#{productImgIdx}, #{productImgValue})
+		]]>
+	</insert>
+	<!-- 이미지 수정 -->
+	<update id="updateProductImage">
+		<![CDATA[
+		update PRODUCTIMG_TABLE
+		set 
+		PRODUCTIMGIDX = #{productImgIdx}, 
+		PRODUCTIMGVALUE = #{productImgValue}
+		where PRODUCTIMGIDX = #{productImgIdx}
+		]]>
+	</update>
+	<!-- 이미지 삭제 -->
+	<delete id="deleteProductImage">
+		<![CDATA[
+		delete
+		from PRODUCTIMG_TABLE
+		where PRODUCTIMGIDX = #{productImgIdx}
+		]]>
+	</delete>	
+	<!-- 이미지 조회 -->
+	<select id="selectProductImage" resultType="java.util.Map">
+		<![CDATA[
+		select PRODUCTIMGVALUE
+		from PRODUCTIMG_TABLE
+		where PRODUCTIMGIDX = #{productImgIdx}
+		]]>
+	</select>
+	
+	<select id="getBestProductList" resultType="Product">
+		<![CDATA[
+		SELECT PRODUCTID,
+			CATEGORYID,
+			USERID,
+			p_name,
+			DESCRIPTION,
+			PRICE,
+			PRODUCTIMG
+		FROM  ( SELECT p.PRODUCTID,
+					CATEGORYID,
+					p.USERID,
+					PNAME as p_name,
+					DESCRIPTION,
+					PRICE,
+					PRODUCTIMG,
+					ROW_NUMBER() OVER (PARTITION BY p.productid ORDER BY o.orderdate)  AS RN
+				FROM PRODUCT p, LINEITEM l, ORDER_TABLE o  
+				where p.productid = l.productid and l.orderid = o.orderid 
+				and o.orderdate BETWEEN ADD_MONTHS(sysdate,-1) AND sysdate
+				order by count(*)
+				) R
+		WHERE R.RN=1
+		]]>
+	</select>
+</mapper>

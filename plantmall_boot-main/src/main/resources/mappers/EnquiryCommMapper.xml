@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.plantmall.dao.mybatis.mapper.EnqCommMapper">
+<cache />
+	<select	id="getEnqCommByEuquiryId" resultType="EnqComm">
+		SELECT ENQUIRYCOMMENTID AS enquiryCommId, ENQUIRYID, USERID, ENQCOMM FROM ENQUIRYCOMMENT WHERE ENQUIRYID = #{enquiryId}
+	</select>
+	
+	<select id="getEnqCommByEnquiryCommId" resultType="EnqComm">
+		SELECT ENQUIRYCOMMENTID AS enquiryCommId, ENQUIRYID, USERID, ENQCOMM FROM ENQUIRYCOMMENT WHERE ENQUIRYCOMMENTID = #{enquiryCommId}
+	</select>
+	
+	<insert id="insertEnqComm" parameterType="EnqComm">
+		INSERT INTO ENQUIRYCOMMENT VALUES (#{enquiryCommId}, #{enqComm}, #{enquiryId}, #{userId})
+		<selectKey keyProperty="enquiryCommId" resultType="int" order="BEFORE">
+			SELECT ENQCOMM_SEQ.NEXTVAL AS ENQUIRYCOMMENTID FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<update id="updateEnqComm" parameterType="EnqComm">
+		UPDATE ENQUIRYCOMMENT
+		SET ENQCOMM = #{enqComm} WHERE ENQUIRYCOMMENTID = #{enquiryCommId}
+	</update>
+</mapper>

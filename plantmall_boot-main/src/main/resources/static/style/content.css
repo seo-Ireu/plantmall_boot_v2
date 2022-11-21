@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+/* contentUpload html */
+.contentUploadForm {
+	margin-top: 200px;
+	margin-left: 300px;
+   	margin-right: 300px;
+    text-align: center;
+   }
+   .btn-secondary {
+   	float: right;
+}
+   #contentImg {
+   	width: 300px;
+   	height: 300px;
+}
+
+/* contentForm html*/
+.feed {
+	margin-top: 200px;
+	margin-left: 300px;
+   	margin-right: 300px;
+    text-align: center;
+    
+}
+.btn-secondary {
+	float: right;
+}
+
+.content1 .content2{
+	display: inline-block
+}
+#feedContentImg {
+	width: 300px;
+	height: 300px;
+	margin-right: 156px;
+}
+
+.comments {
+	float: right;
+	border: 1px solid black;
+}
+
+.feedContentText {
+	margin-right: 260px;
+}
+	
+	
+	
+	

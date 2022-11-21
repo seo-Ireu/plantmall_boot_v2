@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}"> 
+<link rel="stylesheet" href="../static/style/sh.css" type="text/css" th:href="@{../static/style/sh.css}"> 
+	
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body>
+<div th:insert="~{header :: #top}"></div>
+
+     <!-- 로그인 -->
+     <div class="login-wrap" style="padding:5% 25%;">
+         <form  th:action="@{/login}" method="post" >
+         <input th:if="${signonForwardAction}" type="hidden" name="forwardAction"
+	     th:value="${signonForwardAction}"/>
+		  <div class="form-group">
+		    <label for="exampleInputEmail1">아이디</label>
+            <input type="text" name="email" size="20" class="form-control" id="exampleInputEmail1">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputPassword1">비밀번호</label>
+		    <input type="password" class="form-control" id="exampleInputPassword1" name="password" size="20">
+		  </div>
+		  <div class="form-group form-check">
+		    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+		  </div>
+		  <button type="submit" class="btn btn-success">Submit</button>
+		</form>
+     </div>
+     <!-- //로그인 -->
+</body>
+</html>

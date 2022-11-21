@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css"
+	th:href="@{../static/style/sewon.css}">
+
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body onload="init();">
+	<div th:insert="~{header :: #top}"></div>
+	<h2>제품 검색</h2>
+	<div>
+		<form action="/product/searchResult" method="get">
+			<table class="lineTable">
+				<tr>
+					<td class="lineTable">카테고리 선택</td>
+					<td class="lineTable"><select name="categoryId">
+							<option value="">카테고리 선택</option>
+							<option th:each="val : ${categoryList}"
+								th:value="${val?.categoryId}" th:utext="${val?.c_name}">카테고리</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td class="lineTable">검색어</td>
+					<td class="lineTable"><input type="text" name="keyword"
+						placeholder="검색어를 입력하세요"></td>
+				</tr>
+				<tr>
+					<td class="lineTable">가격</td>
+					<td class="lineTable"><input type="text" name="lowPrice"
+						placeholder="최소 가격 입력">~<input type="text"
+						name="highPrice" placeholder="최대 가격 입력">원</td>
+				</tr>
+				<tr>
+			</table>
+			<div align="center">
+				<input type="submit" value="검색">
+			</div>
+		</form>
+	</div>
+</body>
+</html>

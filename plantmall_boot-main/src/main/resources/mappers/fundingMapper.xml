@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.plantmall.dao.mybatis.mapper.FundingMapper">
+
+<sql id="BaseColumns">
+		F.FUNDINGID,
+    	F.PRODUCTID,
+    	F.PRODUCTINFORMATION,
+    	F.SELLERID,
+    	F.TITLE,
+    	F.OPENDATE,
+    	F.CLOSEDATE,
+	    F.TARGETQUANTITY,
+	    F.ORDERNUM,
+    	F.DELIVERYDATE,
+    	F.STATUS,
+    	P.PRODUCTID,
+    	P.CATEGORYID,
+    	P.PNAME,
+    	P.DESCRIPTION,
+    	P.PRICE,
+    	P.PRODUCTIMG
+</sql>
+<resultMap id="associationResultMap" type="Funding">
+	<id column="FUNDINGID" property="fundingId"/>
+	<result column="PRODUCTINFORMATION" property="productInformation"/>
+	<result column="PRODUCTID" property="productId"/>
+	<result column="SELLERID" property="sellerId"/>
+	<result column="TITLE" property="title"/>
+	<result column="OPENDATE" property="openDate"/>
+	<result column="CLOSEDATE" property="closeDate"/>
+	<result column="DELIVERYDATE" property="deliveryDate"/>
+	<result column="TARGETQUANTITY" property="targetQuantity"/>
+	<result column="ORDERNUM" property="orderNum"/>
+	<result column="STATUS" property="status"/>
+	<association property="product" column="PRODUCTID" javaType="Product">
+		<id property="productId" column="productId"/>
+		<result property="userId" column="userId"/>
+		<result property="categoryId" column="categoryId"/>
+		<result property="description" column="description"/>
+		<result property="price" column="price"/>
+		<result property="productImg" column="productImg"/>
+		<result property="p_name" column="PNAME"/>
+	</association>
+</resultMap>
+    <!-- Funding 전체 목록 -->
+    <select id="getAllFundingList" resultMap="associationResultMap">
+    	SELECT <include refid="BaseColumns"/>
+    	FROM FUNDING F, PRODUCT P
+    	WHERE F.PRODUCTID=P.PRODUCTID
+    	ORDER BY F.CLOSEDATE DESC
+    </select>
+    
+   	<select resultType="Funding" id="getAllMyFundingList" resultMap="associationResultMap">
+		SELECT <include refid="BaseColumns"/>
+		FROM FUNDING F, PRODUCT P
+		WHERE SELLERID=#{param1}
+	</select>
+	
+    <select id="getMyAllProductListByUserEmail" parameterType="String" resultType="Product">
+	    SELECT 
+	    	PRODUCTID,
+	    	CATEGORYID,
+	    	PNAME AS p_name,
+	    	DESCRIPTION,
+	    	PRICE,
+	    	PRODUCTIMG,
+	    	USERID,
+	    	TARGETQUANTITY,
+	    	ORDERNUM,
+	    	DELIVERYDATE,
+	    	STATUS
+	      FROM PRODUCT
+	      WHERE PRODUCT.SELLERID =#{param1}
+	      
+    </select>
+    
+    <insert id="insertFunding" parameterType="Funding">
+    	INSERT INTO FUNDING
+    	(FUNDINGID,
+	    	PRODUCTID,
+	    	PRODUCTINFORMATION,
+	    	TITLE,
+	    	OPENDATE,
+	    	CLOSEDATE,
+	    	TARGETQUANTITY,
+	    	ORDERNUM,
+	    	DELIVERYDATE,
+	    	SELLERID
+	    	)
+    	VALUES
+    	(#{fundingId},#{productId},#{productInformation},#{title},#{openDate},#{closeDate},#{targetQuantity},0,#{deliveryDate},#{sellerId})
+    	<selectKey keyProperty="fundingId" resultType="String" order="BEFORE">
+			SELECT FUNDING_SEQ.NEXTVAL AS fundingId FROM DUAL
+		</selectKey>
+    </insert>
+
+    <select id="getFundingById" resultMap="associationResultMap">
+	    SELECT <include refid="BaseColumns"/>
+	    FROM FUNDING F, PRODUCT P
+	    WHERE F.FUNDINGID = #{param1} AND P.PRODUCTID= F.PRODUCTID
+  </select>
+  
+  <update id="updateFunding" parameterType="Funding">
+  	UPDATE FUNDING SET
+	    	PRODUCTID =#{productId},
+	    	PRODUCTINFORMATION =#{productInformation},
+	    	TITLE =#{title},
+	    	OPENDATE =#{openDate},
+	    	CLOSEDATE =#{closeDate},
+	    	UPDATE_AT =SYSDATE,
+	    	TARGETQUANTITY =#{targetQuantity},
+	    	DELIVERYDATE =#{deliveryDate}
+   WHERE FUNDING.FUNDINGID =#{fundingId}
+  </update>
+  
+  <update id="closeFunding" parameterType="Date">
+  <![CDATA[
+  	UPDATE FUNDING
+  	SET STATUS = 0
+  	WHERE CLOSEDATE <= #{curTime}
+  ]]>
+  </update>
+  
+  <delete id="deleteFunding">
+  	DELETE FROM FUNDING
+  	WHERE FUNDINGID = #{param1}
+  </delete>
+  
+</mapper>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css"
+	th:href="@{../static/style/sewon.css}">
+
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css" rel="stylesheet"
+	type="text/css" th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body onload="init();">
+	<div th:insert="~{header :: #top}"></div>
+	<div th:unless="${session.userSession}">
+		<div>해당 페이지에 접근하려면, 로그인 하세요</div>
+	</div>
+	<div
+		th:if="${session.userSession} and ${session.userSession.User.userId} != ${userId}">
+		<div>제품 관리는 자신의 제품만 관리 가능합니다.</div>
+	</div>
+	<div
+		th:if="${session.userSession} and ${session.userSession.User.userId} == ${userId}">
+		<h2>제품 등록</h2>
+		<div id="modal">
+			<div class="modal_content">
+				<h2>Alert</h2>
+				<p>해당 제품을 등록하시겠습니까?</p>
+				<input type="submit" value="OK" id="modal_ok_enrollBtn"> <input
+					type="button" value="Cancel" id="modal_cancel_enrollBtn">
+			</div>
+			<div class="modal_layer"></div>
+		</div>
+		<div>
+			<form action="/product/registrationResult"
+				enctype="multipart/form-data" method="post" id="enrollForm">
+				<input type="hidden" name="userId" th:value="${userId}">
+				<table class="lineTable">
+					<tr>
+						<td class="manageTable" rowspan="6"
+							style="border-bottom: none; border: 1px solid;"><input
+							type="file" name="productImgValue"></td>
+						<td class="manageTable">제품명</td>
+						<td class="manageTable"><input type="text" name="p_name"></td>
+					</tr>
+					<tr>
+						<td class="manageTable">가격</td>
+						<td class="manageTable"><input type="text" name="price">원</td>
+					</tr>
+					<tr>
+						<td class="manageTable">카테고리</td>
+						<td class="manageTable"><select name="categoryId">
+								<option value="">카테고리 선택</option>
+								<option th:each="val : ${categoryList}"
+									th:value="${val?.categoryId}" th:utext="${val?.c_name}">카테고리</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td class="manageTable" style="border-bottom: none">제품 설명</td>
+						<td class="manageTable" style="border-bottom: none"><textarea
+								cols="50" rows="10" placeholder="제품의 상세 설명을 작성해주세요"
+								name="description"></textarea></td>
+
+					</tr>
+					<tr>
+						<td class="manageTable" style="border-bottom: none"></td>
+						<td class="manageTable" style="border-bottom: none"></td>
+						<td class="manageTable" style="border-bottom: none"><input
+							type="button" value="등록" id="modal_open_enrollBtn"></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+	<script>
+		/*등록 버튼 클릭*/
+		document.getElementById("modal_open_enrollBtn").onclick = function() {
+			document.getElementById("modal").style.display = "block";
+		}
+
+		document.getElementById("modal_ok_enrollBtn").onclick = function() {
+			document.getElementById("modal").style.display = "none";
+			enrollForm.submit();
+		}
+		document.getElementById("modal_cancel_enrollBtn").onclick = function() {
+			document.getElementById("modal").style.display = "none";
+		}
+	</script>
+</body>
+</html>

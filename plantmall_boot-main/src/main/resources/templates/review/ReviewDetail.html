@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../../static/style/garam.css" type="text/css" >
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css" th:href="@{../static/style/sewon.css}">
+	
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css"
+	rel="stylesheet" type="text/css"
+	th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body>
+<div th:insert="~{header :: #top}"></div>
+	<div class="reviewForm">
+		<div class="ReviewOrderElement">
+			<div class="ReviewImgBox">
+				<img th:src="@{/getByteImage?p_name=} + ${lineItem.product.p_name}">
+			</div>
+			<div class="ReviewContent">
+				<span th:text="${lineItem.product.p_name}"> 제품 이름 </span>
+				<br><br>
+				<span class="quantity" th:text="|제품 가격: ${lineItem.unitPrice}원|">16000</span>
+				<br>
+				<span class="quantity" th:text="|수량: ${lineItem.quantity}개|">1</span>
+				<span class="itemPrice" th:text="|전체 금액: ${lineItem.unitPrice * lineItem.quantity}원|">16000</span>
+			</div>
+		</div>
+			<!-- <span th:each="err:${#fields.globalErrors()}" th:text="${err}"></span> -->
+		<div class="formWrap">
+			<div class="ReviewDetail_write_area">
+				<div class="rFormTitle ReviewDetail_title">
+					<span th:text="${review.reviewTitle}">리뷰 제목</span>
+				</div>
+				<div class="rFormCol reviewBody">
+					<span th:text="${review.reviewContent}">리뷰 내용</span>
+					<br>
+				</div>
+			</div>
+			<div>
+				<a href="#" class="button" th:href="@{/review/UpdateReview(reviewId=${review.reviewId})}">리뷰 수정</a>
+				<a href="#" class="button" th:href="@{/order/orderDetail(orderId=${review.orderId},status=0)}">확인</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

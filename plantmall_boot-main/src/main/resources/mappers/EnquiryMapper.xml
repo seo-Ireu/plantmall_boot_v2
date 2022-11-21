@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.plantmall.dao.mybatis.mapper.EnquiryMapper">
+<cache />
+	<select id="getEnquiry" resultType="Enquiry">
+		SELECT ENQUIRYID, USERID, PRODUCTID, ENQCONTENT, ENQUIRYDATE
+		FROM ENQUIRY
+		WHERE USERID = #{userId} AND ENQUIRYID = #{enquiryId} AND PRODUCTID = #{productId}
+	</select>
+	
+	<select resultType="Enquiry" id="getEnquiryListByProductId">
+		SELECT ENQUIRYID, USERID, PRODUCTID, ENQCONTENT, ENQUIRYDATE
+		FROM ENQUIRY
+		WHERE PRODUCTID = #{productId} ORDER BY ENQUIRYDATE DESC
+	</select>
+
+	<select resultType="Enquiry" id="getEnquiryByEnquiryId">
+		SELECT ENQUIRYID, USERID, PRODUCTID, ENQCONTENT, ENQUIRYDATE
+		FROM ENQUIRY
+		WHERE ENQUIRYID = #{enquiryId}
+	</select>
+
+	<insert id="insertEnquiry" parameterType="Enquiry">
+		INSERT INTO ENQUIRY
+		VALUES (#{enquiryId}, #{userId}, #{productId}, #{enqContent}, #{enquiryDate})
+		<selectKey keyProperty="enquiryId" resultType="int" order="BEFORE">
+			SELECT ENQ_SEQ.NEXTVAL AS ENQUIRYID FROM DUAL
+		</selectKey>
+	</insert>
+
+	<update id="updateEnquiry" parameterType="Enquiry">
+		UPDATE ENQUIRY SET ENQCONTENT = #{enqContent} WHERE ENQUIRYID = #{enquiryId}
+	</update>
+	
+	<delete id="deleteEnquiry">
+		DELETE FROM ENQUIRY WHERE ENQUIRYID = #{enquiryId}
+	</delete>
+</mapper>

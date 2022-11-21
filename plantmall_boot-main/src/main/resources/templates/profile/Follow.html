@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>식몰</title>
+</head>
+<body>
+	<div class="close">
+		<button type="button" class="btn btn-secondary">X</button>
+	</div>
+	<div class="followList">
+	  <c:forEach var="item" items="${followerList}">
+	    <div class="followInfo"> <img  src="" alt="프로필사진">
+	      <p><a href="/userPage/유저아이디" class="followerInfo">유저이름</a></p>
+	      	<c:choose class="followInfo">
+	      		<c:when test="${item}">
+	      			<button class="btn btn-success followNow">팔로잉</button>	
+	      		</c:when>
+	      		<c:otherwise>
+	      			<button class="btn btn-success notFollowNow">팔로우</button>
+	      		</c:otherwise>
+	      	</c:choose>
+	      	
+	      <span>삭제</span> </div>
+	    </c:forEach>
+	    
+	</div>
+</body>
+</html>

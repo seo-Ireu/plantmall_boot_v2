@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>식몰</title>
+<link rel="stylesheet" href="../static/style/sewon.css" type="text/css"
+	th:href="@{../static/style/sewon.css}">
+
+<!-- Vendor CSS Files -->
+<link href="../static/style/bootstrap.min.css" rel="stylesheet"
+	type="text/css" th:href="@{../static/style/bootstrap.min.css}" />
+<!-- Template Main CSS File -->
+<link href="../static/style/style.css" rel="stylesheet" type="text/css"
+	th:href="@{../static/style/style.css}" />
+</head>
+<body onload="init();">
+	<div th:insert="~{header :: #top}"></div>
+
+	<div th:unless="${session.userSession}">
+		<div>해당 페이지에 접근하려면, 로그인 하세요</div>
+	</div>
+	<div
+		th:if="${session.userSession} and ${session.userSession.User.userId} != ${userId}">
+		<div>제품 관리는 자신의 제품만 관리 가능합니다.</div>
+	</div>
+	<div
+		th:if="${session.userSession} and ${session.userSession.User.userId} == ${userId}">
+		<h2>제품 수정</h2>
+		<div id="modal1">
+			<div class="modal_content">
+				<h2>Alert</h2>
+				<p>해당 제품을 수정하시겠습니까?</p>
+				<input type="submit" value="OK" id="modal_ok_editBtn"> <input
+					type="button" value="Cancel" id="modal_cancel_editBtn">
+			</div>
+			<div class="modal_layer"></div>
+		</div>
+		<div id="modal2">
+			<div class="modal_content">
+				<h2>Alert</h2>
+				<p>해당 제품을 삭제하시겠습니까?</p>
+				<input type="submit" value="OK" id="modal_ok_deleteBtn"> <input
+					type="button" value="Cancel" id="modal_cancel_deleteBtn">
+			</div>
+			<div class="modal_layer"></div>
+		</div>
+		<div>
+			<form id="editForm" enctype="multipart/form-data" method="post">
+				<input type="hidden" name="productId"
+					th:value="${product.productId}"> <input type="hidden"
+					name="userId" th:value="${product.userId}">
+				<table class="lineTable">
+					<tr>
+						<td class="manageTable" rowspan="6"
+							style="border-bottom: none; border: 1px solid; text-align: center">
+							<img alt="등록된 이미지가 없습니다"
+							th:src="@{/getByteImage?p_name=}+${product.p_name}"
+							style="width: 300px" /> <input type="file"
+							name="productImgValue">
+						</td>
+						<td class="manageTable">제품명</td>
+						<td class="manageTable"><input type="text" name="p_name"
+							th:value="${product.p_name}"></td>
+					</tr>
+					<tr>
+						<td class="manageTable">가격</td>
+						<td class="manageTable"><input type="text" name="price"
+							th:value="${product.price}">원</td>
+					</tr>
+					<tr>
+						<td class="manageTable">카테고리</td>
+						<td class="manageTable"><select name="categoryId">
+								<option value="">카테고리 선택</option>
+								<option th:each="val : ${categoryList}"
+									th:value="${val?.categoryId}" th:utext="${val?.c_name}"
+									th:selected="${product.categoryId.equals(val?.categoryId)}">카테고리</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td class="manageTable" style="border-bottom: none">제품 설명</td>
+						<td class="manageTable" style="border-bottom: none"><textarea
+								cols="50" rows="10" placeholder="제품의 상세 설명을 작성해주세요"
+								th:text="${product.description}" name="description"></textarea></td>
+
+					</tr>
+					<tr>
+						<td class="manageTable" style="border-bottom: none"></td>
+						<td class="manageTable" style="border-bottom: none"></td>
+						<td class="manageTable" style="border-bottom: none"><input
+							type="button" value="수정" id="modal_open_editBtn"> <input
+							type="button" value="삭제" id="modal_open_deleteBtn"></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+	<script th:inline="javascript">
+		document.getElementById("modal1").style.display = "none";
+
+		/* 수정 버튼 클릭 */
+		document.getElementById("modal_open_editBtn").onclick = function() {
+			document.getElementById("modal1").style.display = "block";
+		}
+
+		document.getElementById("modal_ok_editBtn").onclick = function() {
+			document.getElementById("modal1").style.display = "none";
+			editForm.action = "/product/modifyResult";
+			editForm.submit();
+		}
+		document.getElementById("modal_cancel_editBtn").onclick = function() {
+			document.getElementById("modal1").style.display = "none";
+		}
+
+		/* 삭제 버튼 클릭 */
+		document.getElementById("modal_open_deleteBtn").onclick = function() {
+			document.getElementById("modal2").style.display = "block";
+		}
+
+		document.getElementById("modal_ok_deleteBtn").onclick = function() {
+			document.getElementById("modal2").style.display = "none";
+			editForm.action = "/product/deleteResult";
+			editForm.submit();
+		}
+		document.getElementById("modal_cancel_deleteBtn").onclick = function() {
+			document.getElementById("modal2").style.display = "none";
+		}
+	</script>
+</body>
+</html>

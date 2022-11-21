@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<div class="includeEnquiry" th:fragment="includeEnquiry">
+		<div class="createEnq">
+			<div class="navSideBtn">
+				<a th:href="@{/enquiry/newEnquiry(productId=${product.productId})}" class="enqButton">문의하기</a>
+			</div>
+		</div>
+		<table class="enquiryElements">
+			<tbody>
+				<tr th:if="${#lists.size(enquiryList)} == 0">
+					<td style="text-align:center;" colspan="8">문의 내역이 없습니다.</td>
+				</tr>
+				<tr th:each="enquiry: ${enquiryList}">
+					<td>
+						<div class="enquiry">
+							<div class="miniTab">
+								<span th:text="${enquiry.userName}">서가람</span>
+								<span th:text="${#dates.format(enquiry.enquiryDate, 'yyyy.MM.dd HH:mm')}">2022-04-15</span>
+								<div class="updateReview" th:if="${#strings.equals(enquiry.userId, sessionUserId)} and ${enquiry.enqComm} == null">
+									<a href="#" class="updateEnq" th:href="@{/enquiry/updateEnquiryForm(enquiryId=${enquiry.enquiryId})}">수정</a>
+									<a href="#" class="updateEnq" th:href="@{/enquiry/deleteEnquiry(enquiryId=${enquiry.enquiryId}, productId=${enquiry.productId})}">삭제</a>
+								</div>
+								<div class="updateReview" th:if="${#strings.equals(seller, sessionUserId)}">
+									<a href="javascript:void(0)" class="updateEnq enqCommentBtn" th:if="${enquiry.enqComm} == null" th:onclick="showTextarea(0)">답변 달기</a>
+									<a href="javascript:void(0)" class="updateEnq enqCommentBtn" th:if="${enquiry.enqComm} != null" th:onclick="showTextarea(1)">답변 수정</a>
+								</div>
+							</div>
+							<div class="question">
+								Q.
+								<span th:text="${enquiry.enqContent}">문의내역</span>
+								<div class="sellerCommentTextarea" th:if="${#strings.equals(seller, sessionUserId)}" style="display:none;">
+									<textarea rows="3" cols="95" class="enqCommentText" th:attr="data-enqNum=${enquiry.enquiryId}" style="border: 1px solid; padding-right: 5px;"></textarea>
+									<a href="javascript:void(0)" class="updateEnq enqCommentBtn" th:attr="data-enqNum=${enquiry.enquiryId}" 
+										th:if="${enquiry.enqComm} == null" th:onclick="commentFunction([[${enquiry.enquiryId}]], [[${seller}]], 0)">저장</a>
+								</div>
+							</div>
+							<div class="answer" th:if="${enquiry.enqComm} != null">
+								<div class="replyCell">
+									<div class="info">
+										<span th:text="${seller}">판매 회원 이름</span>
+									</div>
+									<div class="replyText">
+										<b>A.</b>
+										<span th:text="${enquiry.enqComm.enqComm}">답변</span>
+										<div class="sellerReCommentTextarea" th:if="${#strings.equals(seller, sessionUserId)}" style="display:none;">
+											<textarea rows="3" cols="95" class="enqReCommentText" th:attr="data-enqCommNum=${enquiry.enqComm.enquiryCommId}"
+												 style="border: 1px solid; padding-right: 5px;" th:text="${enquiry.enqComm.enqComm}"></textarea>
+											<a href="javascript:void(0)" class="updateEnq enqCommentBtn" th:attr="data-enqCommNum=${enquiry.enqComm.enquiryCommId}" th:if="${enquiry.enqComm} != null" th:onclick="commentFunction([[${enquiry.enqComm.enquiryCommId}]], [[${seller}]], 1)">수정</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
